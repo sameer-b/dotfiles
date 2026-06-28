@@ -2,28 +2,28 @@ local colors = require("colors")
 
 local function update()
   local date = os.date("%a %b %d"):gsub(" 0", " ")
-  local time = os.date("%H:%M")
-  sbar.set("center.date", { label = date })
-  sbar.set("center.time", { label = { string = time, color = colors.accent } })
+  local time = os.date("%I:%M %p")
+  sbar.set("widgets.date", { label = date })
+  sbar.set("widgets.time", { label = { string = time, color = colors.accent } })
 end
 
-sbar.add("item", "center.date", {
-  position  = "center",
+sbar.add("item", "widgets.date", {
+  position  = "right",
   icon      = { drawing = false },
   label     = { string = "", font = { size = 12 } },
   padding_left = 4,
-  padding_right = 4,
+  padding_right = 2,
 })
 
-sbar.add("item", "center.time", {
-  position  = "center",
+sbar.add("item", "widgets.time", {
+  position  = "right",
   icon      = { drawing = false },
   label     = { string = "", font = { size = 12 } },
-  padding_left = 4,
+  padding_left = 2,
   padding_right = 4,
 })
 
 update()
-sbar.subscribe("center.date", "routine", update)
-sbar.subscribe("center.date", "forced", update)
-sbar.subscribe("center.date", "system_woke", update)
+sbar.subscribe("widgets.date", "routine", update)
+sbar.subscribe("widgets.date", "forced", update)
+sbar.subscribe("widgets.date", "system_woke", update)
