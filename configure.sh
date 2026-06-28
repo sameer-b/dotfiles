@@ -7,9 +7,9 @@ echo "Dotfiles: $DOTFILES"
 echo "Backup:   $BACKUP_DIR"
 echo ""
 
-source "$DOTFILES/scripts/install-ghostty.sh"
-source "$DOTFILES/scripts/install-fastfetch.sh"
-source "$DOTFILES/scripts/install-omniwm.sh"
+source "$DOTFILES/ghostty/install.sh"
+source "$DOTFILES/fastfetch/install.sh"
+source "$DOTFILES/omniwm/install.sh"
 
 echo ""
 echo "Done. Backups saved to $BACKUP_DIR"
