@@ -12,11 +12,6 @@ for ws = 1, WORKSPACE_COUNT do
       padding_left  = 6,
       padding_right = 2,
     },
-    background = {
-      color    = colors.transparent,
-      height   = 3,
-      y_offset = 12,
-    },
     click_script = "omniwmctl workspace focus-name " .. tostring(ws),
     position = "left",
   })
@@ -39,12 +34,36 @@ for ws = 1, WORKSPACE_COUNT do
       position   = "left",
     })
   end
+
+  sbar.add("item", string.format("space.%s.pad", ws), {
+    label    = { string = "", width = 6 },
+    icon     = { drawing = false },
+    position = "left",
+  })
 end
 
 sbar.add("item", "spaces.right_pad", {
   label = { string = "", width = 5 },
   position = "left",
 })
+
+for ws = 1, WORKSPACE_COUNT do
+  local members = {
+    "space." .. ws,
+    string.format("space.%s.pad", ws),
+  }
+  for slot = 1, MAX_APP_SLOTS do
+    table.insert(members, string.format("space.%s.app.%s", ws, slot))
+  end
+  sbar.exec("sketchybar --add bracket group." .. ws .. " " .. table.concat(members, " ") .. " 2>/dev/null")
+  sbar.set("group." .. ws, {
+    background = {
+      color    = colors.transparent,
+      height   = 3,
+      y_offset = 12,
+    },
+  })
+end
 
 local function parse_result(result)
   if not result then return nil end
@@ -82,7 +101,10 @@ local function update()
       local underline    = (ws == active) and colors.love or colors.transparent
 
       sbar.set("space." .. ws, {
-        label      = { color = active_color },
+        label = { color = active_color },
+      })
+
+      sbar.set("group." .. ws, {
         background = { color = underline },
       })
 
