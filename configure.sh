@@ -29,11 +29,23 @@ else
   link_file "$DOTFILES/ghostty/config" "$HOME/.config/ghostty/config"
 fi
 
+sed_i() {
+  if [ "$(uname -s)" = "Darwin" ]; then
+    sed -i '' "$@"
+  else
+    sed -i "$@"
+  fi
+}
+
 # Fastfetch
 link_file "$DOTFILES/fastfetch/config.jsonc" "$HOME/.config/fastfetch/config.jsonc"
 
-# Fastfetch logo (for standalone usage when fastfetch reads this config)
-link_file "$DOTFILES/assets/cats/cat2.png" "$HOME/.config/fastfetch/logo.png"
+# Copy cat images to fastfetch config dir and update logo source path
+mkdir -p "$HOME/.config/fastfetch/cats"
+cp "$DOTFILES/assets/cats/"*.png "$HOME/.config/fastfetch/cats/"
+sed_i "s|PLACEHOLDER_LOGO_PATH|$HOME/.config/fastfetch/cats/cat2.png|" "$DOTFILES/fastfetch/config.jsonc"
+echo "  copied images to $HOME/.config/fastfetch/cats/"
+echo "  updated logo source in $DOTFILES/fastfetch/config.jsonc"
 
 # Scripts
 link_file "$DOTFILES/scripts/ghostty-init" "$HOME/.local/bin/ghostty-init"
