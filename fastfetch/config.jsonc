@@ -1,0 +1,172 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
+  "logo": {
+    "type": "kitty",
+    "source": "/Users/sam/Pictures/cats/cat2.png",
+
+    "width": 27,
+    "height": null,
+    "padding": {
+      "top": 1,
+      "left": 0,
+      "bottom": 0,
+      "right": 3
+    },
+    "printRemaining": false,
+    "preserveAspectRatio": true,
+    "recache": false,
+    "position": "left"
+  },
+  "display": {
+    "separator": "  ",
+    "color": {
+      "keys": "white",
+      "title": "95",
+      "output": "97",
+      "separator": "90"
+    },
+    "brightColor": true,
+    "key": {
+      "width": 14,
+      "type": "string",
+      "paddingLeft": 2
+    }
+  },
+  "general": {
+    "thread": true,
+    "processingTimeout": 5000,
+    "detectVersion": true,
+    "playerName": ""
+  },
+  "modules": [
+    {
+      "type": "title",
+      "key": "    ",
+      "fqdn": false,
+      "color": {
+        "user": "95",
+        "at": "90",
+        "host": "91"
+      }
+    },
+    {
+      "type": "separator",
+      "string": "─",
+      "outputColor": "90",
+      "times": 20
+    },
+    {
+      "type": "os",
+      "key": "  OS",
+      "keyIcon": "",
+      "outputColor": "cyan"
+    },
+    {
+      "type": "host",
+      "key": "󰌢  Host",
+      "keyIcon": "",
+      "outputColor": "green"
+    },
+    {
+      "type": "kernel",
+      "key": "  Kernel",
+      "keyIcon": "",
+      "outputColor": "yellow"
+    },
+    {
+      "type": "uptime",
+      "key": "  Uptime",
+      "keyIcon": "",
+      "outputColor": "blue"
+    },
+    {
+      "type": "packages",
+      "key": "󰏖  Pkgs",
+      "keyIcon": "",
+      "disabled": [],
+      "combined": true,
+      "outputColor": "magenta"
+    },
+    {
+      "type": "shell",
+      "key": "  Shell",
+      "keyIcon": "",
+      "outputColor": "cyan"
+    },
+    {
+      "type": "terminal",
+      "key": "  Term",
+      "keyIcon": "",
+      "outputColor": "green"
+    },
+    {
+      "type": "separator",
+      "string": "─",
+      "outputColor": "90",
+      "times": 20
+    },
+    {
+      "type": "cpu",
+      "key": "  CPU",
+      "keyIcon": "",
+      "temp": true,
+      "showPeCoreCount": true,
+      "outputColor": "yellow"
+    },
+    {
+      "type": "gpu",
+      "key": "󰾲  GPU",
+      "keyIcon": "",
+      "temp": true,
+      "outputColor": "magenta"
+    },
+    {
+      "type": "memory",
+      "key": "  RAM",
+      "keyIcon": "",
+      "outputColor": "cyan"
+    },
+    {
+      "type": "disk",
+      "key": "  Disk",
+      "keyIcon": "",
+      "folders": "/",
+      "showRegular": false,
+      "showExternal": false,
+      "showHidden": false,
+      "outputColor": "green"
+    },
+    {
+      "type": "separator",
+      "string": "─",
+      "outputColor": "90",
+      "times": 20
+    },
+    {
+      "type": "battery",
+      "key": "  Bat",
+      "keyIcon": "",
+      "outputColor": "yellow"
+    },
+    {
+      "type": "localip",
+      "key": "󰩟  IP",
+      "keyIcon": "",
+      "outputColor": "blue"
+    },
+    {
+      "type": "locale",
+      "key": "  Locale",
+      "keyIcon": "",
+      "outputColor": "magenta"
+    },
+    "break",
+    {
+      "type": "colors",
+      "key": "    Colors",
+      "keyIcon": "",
+      "symbol": "circle",
+      "paddingLeft": 0
+    }
+  ]
+}

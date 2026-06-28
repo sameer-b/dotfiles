@@ -1,0 +1,9 @@
+#!/bin/bash
+DOTFILES="${DOTFILES:-$HOME/dev/dotfiles}"
+CAT_DIR="$DOTFILES/assets/cats"
+CAT=$(find "$CAT_DIR" -type f \( -name "*.png" -o -name "*.jpg" \) | sort -R | head -1)
+if [ -n "$CAT" ]; then
+  exec fastfetch --config "$DOTFILES/fastfetch/config.jsonc" --logo "$CAT" "$@"
+else
+  exec fastfetch "$@"
+fi
