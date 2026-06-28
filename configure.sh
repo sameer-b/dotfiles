@@ -12,6 +12,7 @@ echo ""
 source "$DOTFILES/ghostty/install.sh"
 source "$DOTFILES/fastfetch/install.sh"
 source "$DOTFILES/omniwm/install.sh"
+source "$DOTFILES/sketchybar/install.sh"
 
 echo ""
 echo "Done. Backups saved to $BACKUP_DIR"
