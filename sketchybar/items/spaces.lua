@@ -1,16 +1,15 @@
 local colors = require("colors")
-local workspace_count = 9
-local max_apps = 4
-local script_path = os.getenv("HOME") .. "/.config/sketchybar/helpers/spaces_helper.py"
 
-for i = 1, workspace_count do
-  local index = i
+local WORKSPACE_COUNT = 9
+local MAX_APP_SLOTS   = 4
+local HELPER_SCRIPT   = os.getenv("HOME") .. "/.config/sketchybar/helpers/spaces_helper.py"
 
-  sbar.add("item", "space." .. index, {
+for ws = 1, WORKSPACE_COUNT do
+  sbar.add("item", "space." .. ws, {
     label = {
-      string    = tostring(index),
+      string    = tostring(ws),
       color     = colors.subtle,
-      padding_left = 6,
+      padding_left  = 6,
       padding_right = 2,
     },
     background = {
@@ -18,12 +17,12 @@ for i = 1, workspace_count do
       height   = 3,
       y_offset = 12,
     },
-    click_script = "omniwmctl workspace focus-name " .. tostring(index),
+    click_script = "omniwmctl workspace focus-name " .. tostring(ws),
     position = "left",
   })
 
-  for j = 1, max_apps do
-    sbar.add("item", "space." .. index .. ".app." .. j, {
+  for slot = 1, MAX_APP_SLOTS do
+    sbar.add("item", string.format("space.%s.app.%s", ws, slot), {
       drawing  = false,
       icon     = { drawing = false },
       label    = { drawing = false },
@@ -35,7 +34,7 @@ for i = 1, workspace_count do
         color            = 0x00000000,
       },
       width      = 18,
-      padding_left = 0,
+      padding_left  = 0,
       padding_right = 0,
       position   = "left",
     })
@@ -47,42 +46,54 @@ sbar.add("item", "spaces.right_pad", {
   position = "left",
 })
 
+local function parse_result(result)
+  if not result then return nil end
+  local lines = {}
+  for line in result:gmatch("[^\n]+") do
+    table.insert(lines, line)
+  end
+  return #lines > 1 and lines or nil
+end
+
+local function active_workspace(lines)
+  return tonumber((lines[1] or ""):match("active:(%-?%d+)")) or -1
+end
+
+local function parse_apps(line)
+  local _, csv = line:match("(%d+):(.*)")
+  if not csv or csv == "" then return {} end
+  local apps = {}
+  for entry in csv:gmatch("[^,]+") do
+    local _, path = entry:match("([^|]+)|(.+)")
+    if path then table.insert(apps, path) end
+  end
+  return apps
+end
+
 local function update()
-  sbar.exec("python3 " .. script_path .. " 2>/dev/null", function(result)
-    if not result then return end
-    local lines = {}
-    for line in result:gmatch("[^\n]+") do
-      table.insert(lines, line)
-    end
+  sbar.exec("python3 " .. HELPER_SCRIPT .. " 2>/dev/null", function(result)
+    local lines = parse_result(result)
+    if not lines then return end
 
-    local active_line = lines[1] or ""
-    local active = tonumber(active_line:match("active:(%-?%d+)")) or -1
+    local active = active_workspace(lines)
 
-    for i = 1, workspace_count do
-      local is_active = (i == active)
-      sbar.set("space." .. i, {
-        label      = { color = is_active and colors.text or colors.subtle },
-        background = { color = is_active and colors.love or colors.transparent },
+    for ws = 1, WORKSPACE_COUNT do
+      local active_color = (ws == active) and colors.text or colors.subtle
+      local underline    = (ws == active) and colors.love or colors.transparent
+
+      sbar.set("space." .. ws, {
+        label      = { color = active_color },
+        background = { color = underline },
       })
 
-      local ws_info = lines[i + 1] or ""
-      local _, apps_str = ws_info:match("(%d+):(.*)")
-      local apps = {}
-      if apps_str and apps_str ~= "" then
-        for entry in apps_str:gmatch("[^,]+") do
-          local name, path = entry:match("([^|]+)|(.+)")
-          if name and path then
-            table.insert(apps, path)
-          end
-        end
-      end
-
-      for j = 1, max_apps do
-        local item = "space." .. i .. ".app." .. j
-        if j <= #apps and apps[j] ~= "" then
+      local apps = parse_apps(lines[ws + 1])
+      for slot = 1, MAX_APP_SLOTS do
+        local item = string.format("space.%s.app.%s", ws, slot)
+        local icon = apps[slot]
+        if icon then
           sbar.set(item, {
             drawing    = true,
-            background = { image = apps[j], drawing = true },
+            background = { image = icon, drawing = true },
           })
         else
           sbar.set(item, { drawing = false })
