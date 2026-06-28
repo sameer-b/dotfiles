@@ -49,6 +49,11 @@ cp "$DOTFILES/assets/cats/"*.png "$HOME/.config/fastfetch/cats/"
 echo "  copied images to $HOME/.config/fastfetch/cats/"
 echo "  wrote config to $HOME/.config/fastfetch/config.jsonc"
 
+# OmniWM (macOS only)
+if [ "$os" = "Darwin" ]; then
+  link_file "$DOTFILES/omniwm/settings.toml" "$HOME/.config/omniwm/settings.toml"
+fi
+
 # Scripts
 link_file "$DOTFILES/scripts/ghostty-init" "$HOME/.local/bin/ghostty-init"
 link_file "$DOTFILES/scripts/catfetch" "$HOME/.local/bin/catfetch"
