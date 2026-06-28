@@ -24,12 +24,13 @@ for i = 1, workspace_count do
 
   for j = 1, max_apps do
     sbar.add("item", "space." .. index .. ".app." .. j, {
-      icon   = { drawing = false },
-      label  = { drawing = false },
+      drawing  = false,
+      icon     = { drawing = false },
+      label    = { drawing = false },
       background = {
         image            = "",
         ["image.scale"]  = 0.5,
-        drawing          = false,
+        drawing          = true,
         height           = 28,
         color            = 0x00000000,
       },
@@ -42,7 +43,7 @@ for i = 1, workspace_count do
 end
 
 sbar.add("item", "spaces.right_pad", {
-  label = { string = "", width = 4 },
+  label = { string = "", width = 5 },
   position = "left",
 })
 
@@ -80,13 +81,11 @@ local function update()
         local item = "space." .. i .. ".app." .. j
         if j <= #apps and apps[j] ~= "" then
           sbar.set(item, {
-            background = {
-              image   = apps[j],
-              drawing = true,
-            },
+            drawing    = true,
+            background = { image = apps[j], drawing = true },
           })
         else
-          sbar.set(item, { background = { drawing = false } })
+          sbar.set(item, { drawing = false })
         end
       end
     end
