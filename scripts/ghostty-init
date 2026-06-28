@@ -2,10 +2,13 @@
 export FASTFETCH_RAN=1
 DOTFILES="${DOTFILES:-$HOME/dev/dotfiles}"
 
-# Source profile so PATH includes Homebrew and other package managers
-[ -f "$HOME/.zshrc" ] && source "$HOME/.zshrc"
+# Find fastfetch on any OS (macOS Homebrew, Linux, etc.)
+FASTFETCH=""
+for p in /opt/homebrew/bin/fastfetch /usr/local/bin/fastfetch /usr/bin/fastfetch; do
+  [ -x "$p" ] && FASTFETCH="$p" && break
+done
 
 cf=$(find "$DOTFILES/assets/cats" -type f -name "*.png" 2>/dev/null | sort -R | head -1)
 [ -z "$cf" ] && cf="$DOTFILES/assets/cats/cat2.png"
-[ -f "$cf" ] && fastfetch --config "$DOTFILES/fastfetch/config.jsonc" --logo "$cf"
+[ -f "$cf" ] && [ -n "$FASTFETCH" ] && "$FASTFETCH" --config "$DOTFILES/fastfetch/config.jsonc" --logo "$cf"
 exec $SHELL --login
