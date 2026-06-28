@@ -1,6 +1,10 @@
 #!/bin/bash
 export FASTFETCH_RAN=1
 DOTFILES="${DOTFILES:-$HOME/dev/dotfiles}"
+
+# Source profile so PATH includes Homebrew and other package managers
+[ -f "$HOME/.zshrc" ] && source "$HOME/.zshrc"
+
 cf=$(find "$DOTFILES/assets/cats" -type f -name "*.png" 2>/dev/null | sort -R | head -1)
 [ -z "$cf" ] && cf="$DOTFILES/assets/cats/cat2.png"
 [ -f "$cf" ] && fastfetch --config "$DOTFILES/fastfetch/config.jsonc" --logo "$cf"
