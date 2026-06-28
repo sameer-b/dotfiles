@@ -7,8 +7,9 @@ link_file() {
   local src="$1" dst="$2"
   mkdir -p "$(dirname "$dst")"
   if [ -f "$dst" ] && [ ! -L "$dst" ]; then
-    mkdir -p "$BACKUP_DIR"
-    mv "$dst" "$BACKUP_DIR/"
+    local rel="${dst#$HOME/}"
+    mkdir -p "$(dirname "$BACKUP_DIR/$rel")"
+    mv "$dst" "$BACKUP_DIR/$rel"
     echo "  backed up: $dst"
   fi
   ln -sf "$src" "$dst"

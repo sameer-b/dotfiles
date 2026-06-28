@@ -1,5 +1,4 @@
 #!/bin/bash
-export FASTFETCH_RAN=1
 DOTFILES="${DOTFILES:-$HOME/dev/dotfiles}"
 
 # Find fastfetch on any OS (macOS Homebrew, Linux, etc.)
@@ -11,4 +10,4 @@ done
 cf=$(find "$DOTFILES/assets/cats" -type f -name "*.png" 2>/dev/null | sort -R | head -1)
 [ -z "$cf" ] && cf="$DOTFILES/assets/cats/cat2.png"
 [ -f "$cf" ] && [ -n "$FASTFETCH" ] && "$FASTFETCH" --config "$DOTFILES/fastfetch/config.jsonc" --logo "$cf"
-exec $SHELL --login
+exec "$SHELL" --login

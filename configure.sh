@@ -1,7 +1,9 @@
 #!/bin/bash
 set -e
 
-source "$(cd "$(dirname "$0")" && pwd)/scripts/lib.sh"
+lib="$(cd "$(dirname "$0")" && pwd)/scripts/lib.sh"
+[ -f "$lib" ] || { echo "Missing $lib" >&2; exit 1; }
+source "$lib"
 
 echo "Dotfiles: $DOTFILES"
 echo "Backup:   $BACKUP_DIR"
