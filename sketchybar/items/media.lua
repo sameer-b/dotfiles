@@ -43,5 +43,5 @@ sbar.add("item", "center.media", {
 
 sbar.add("event", "media_change")
 update()
-sbar.subscribe("media_change", update)
-sbar.subscribe("routine", update)
+sbar.subscribe("center.media", "media_change", update)
+sbar.subscribe("center.media", "routine", update)

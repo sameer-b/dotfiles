@@ -23,9 +23,8 @@ local function update()
       elseif pct <= 25 then color = colors.orange end
 
       sbar.set("widgets.battery", {
-        icon       = icon,
-        icon_color = color,
-        label      = tostring(pct) .. "%",
+        icon  = { string = icon, color = color },
+        label = tostring(pct) .. "%",
       })
     end)
   end)
@@ -41,6 +40,6 @@ sbar.add("item", "widgets.battery", {
 })
 
 update()
-sbar.subscribe("routine", update)
-sbar.subscribe("power_source_change", update)
-sbar.subscribe("system_woke", update)
+sbar.subscribe("widgets.battery", "routine", update)
+sbar.subscribe("widgets.battery", "power_source_change", update)
+sbar.subscribe("widgets.battery", "system_woke", update)

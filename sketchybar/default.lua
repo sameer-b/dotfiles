@@ -4,21 +4,13 @@ local colors   = require("colors")
 sbar.default({
   updates = "when_shown",
   icon = {
-    font = {
-      family = settings.font.text,
-      style  = settings.font.style_map["Bold"],
-      size   = 13.0,
-    },
+    font = settings.font.text .. ":Bold:13.0",
     color        = colors.text,
     padding_left = settings.paddings,
     padding_right = settings.paddings,
   },
   label = {
-    font = {
-      family = settings.font.text,
-      style  = settings.font.style_map["Bold"],
-      size   = 12.0,
-    },
+    font = settings.font.text .. ":Bold:12.0",
     color        = colors.text,
     padding_left = settings.paddings,
     padding_right = settings.paddings,

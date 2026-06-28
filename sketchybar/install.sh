@@ -57,3 +57,5 @@ done
 # Start sketchybar
 echo "  starting sketchybar..."
 brew services start FelixKratz/formulae/sketchybar 2>/dev/null || true
+brew services restart FelixKratz/formulae/sketchybar 2>/dev/null || true
+sketchybar --reload 2>/dev/null || true

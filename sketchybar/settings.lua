@@ -1,6 +1,7 @@
 return {
   paddings       = 3,
   group_paddings = 5,
+  weather_location = "San+Bruno",
   font           = {
     text    = "Hack Nerd Font Mono",
     numbers = "Hack Nerd Font Mono",

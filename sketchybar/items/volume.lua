@@ -22,9 +22,8 @@ local function update()
       local icon = get_icon(vol, muted)
       local color = (muted == "true") and colors.red or colors.text
       sbar.set("widgets.volume", {
-        icon       = icon,
-        icon_color = color,
-        label      = vol .. "%",
+        icon  = { string = icon, color = color },
+        label = vol .. "%",
       })
     end)
   end)
@@ -40,4 +39,4 @@ sbar.add("item", "widgets.volume", {
 })
 
 update()
-sbar.subscribe("volume_change", update)
+sbar.subscribe("widgets.volume", "volume_change", update)
