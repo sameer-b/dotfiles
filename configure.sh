@@ -37,15 +37,17 @@ sed_i() {
   fi
 }
 
-# Fastfetch
-link_file "$DOTFILES/fastfetch/config.jsonc" "$HOME/.config/fastfetch/config.jsonc"
+# Fastfetch config (copied, not symlinked, so sed doesn't dirty the repo)
+mkdir -p "$HOME/.config/fastfetch"
+[ -L "$HOME/.config/fastfetch/config.jsonc" ] && rm "$HOME/.config/fastfetch/config.jsonc"
+cp "$DOTFILES/fastfetch/config.jsonc" "$HOME/.config/fastfetch/config.jsonc"
+sed_i "s|PLACEHOLDER_LOGO_PATH|$HOME/.config/fastfetch/cats/cat2.png|" "$HOME/.config/fastfetch/config.jsonc"
 
-# Copy cat images to fastfetch config dir and update logo source path
+# Copy cat images to fastfetch config dir
 mkdir -p "$HOME/.config/fastfetch/cats"
 cp "$DOTFILES/assets/cats/"*.png "$HOME/.config/fastfetch/cats/"
-sed_i "s|PLACEHOLDER_LOGO_PATH|$HOME/.config/fastfetch/cats/cat2.png|" "$DOTFILES/fastfetch/config.jsonc"
 echo "  copied images to $HOME/.config/fastfetch/cats/"
-echo "  updated logo source in $DOTFILES/fastfetch/config.jsonc"
+echo "  wrote config to $HOME/.config/fastfetch/config.jsonc"
 
 # Scripts
 link_file "$DOTFILES/scripts/ghostty-init" "$HOME/.local/bin/ghostty-init"
