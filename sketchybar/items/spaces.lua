@@ -1,6 +1,6 @@
 local colors = require("colors")
+local icons  = require("icons")
 
--- Show 5 workspace indicators using OmniWM or static fallback
 local workspace_count = 9
 
 for i = 1, workspace_count do
@@ -29,15 +29,70 @@ sbar.add("item", "spaces.right_pad", {
   position = "left",
 })
 
--- Highlight active workspace via OmniWM IPC
+local function build_label(label, apps)
+  local s = label
+  for i = 1, #apps do
+    if i > 4 then
+      s = s .. " +" .. tostring(#apps - 4)
+      break
+    end
+    local ic = icons.app[apps[i]] or "·"
+    s = s .. " " .. ic
+  end
+  return s
+end
+
 local function update()
-  sbar.exec("omniwmctl query workspaces --current 2>/dev/null | grep -o '\"number\" : [0-9]*' | head -1 | cut -d: -f2 | tr -d ' '", function(result)
-    local active = tonumber(result) or -1
+  sbar.exec([[
+python3 -c "
+import subprocess, json, sys
+try:
+    ws = json.loads(subprocess.check_output(['omniwmctl', 'query', 'workspaces', '--current', '--format', 'json'], stderr=subprocess.DEVNULL))
+    print('active:' + str(ws['result']['payload']['workspaces'][0]['number']))
+except:
+    print('active:-1')
+try:
+    wins = json.loads(subprocess.check_output(['omniwmctl', 'query', 'windows', '--fields', 'app,workspace', '--format', 'json'], stderr=subprocess.DEVNULL))
+    by_ws = {}
+    for w in wins['result']['payload']['windows']:
+        n = w.get('workspace', {}).get('number')
+        app = w.get('app', {}).get('name', '')
+        if n is not None and app:
+            by_ws.setdefault(n, set()).add(app)
+    for i in range(1, 10):
+        apps = sorted(by_ws.get(i, []))
+        print(str(i) + ':' + ','.join(apps))
+except:
+    for i in range(1, 10):
+        print(str(i) + ':')
+" 2>/dev/null
+  ]], function(result)
+    if not result then return end
+    local lines = {}
+    for line in result:gmatch("[^\n]+") do
+      table.insert(lines, line)
+    end
+
+    local active_line = lines[1] or ""
+    local active = tonumber(active_line:match("active:(%-?%d+)")) or -1
+
     for i = 1, workspace_count do
-      local active_color = i == active
-      sbar.set("space." .. i, {
-        label      = { color = active_color and colors.text or colors.subtle },
-        background = { color = active_color and colors.love or colors.transparent },
+      local ws_info = lines[i + 1] or ""
+      local ws_num, apps_csv = ws_info:match("(%d+):(.*)")
+      ws_num = tonumber(ws_num) or i
+
+      local apps = {}
+      if apps_csv and apps_csv ~= "" then
+        for app in apps_csv:gmatch("[^,]+") do
+          table.insert(apps, app)
+        end
+      end
+
+      local label_str = build_label(tostring(ws_num), apps)
+
+      sbar.set("space." .. ws_num, {
+        label = { string = label_str, color = (ws_num == active) and colors.text or colors.subtle },
+        background = { color = (ws_num == active) and colors.love or colors.transparent },
       })
     end
   end)
