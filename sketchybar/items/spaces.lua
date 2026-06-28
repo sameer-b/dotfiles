@@ -20,7 +20,6 @@ for i = 1, workspace_count do
     click_script = "omniwmctl workspace focus-name " .. tostring(index),
     position = "left",
   }
-  if i == 1 then props.update_freq = 1 end
   sbar.add("item", "space." .. index, props)
 end
 
@@ -98,5 +97,6 @@ except:
   end)
 end
 
+sbar.add("event", "space_update")
 update()
-sbar.subscribe("space.1", "routine", update)
+sbar.subscribe("space.1", "space_update", update)
