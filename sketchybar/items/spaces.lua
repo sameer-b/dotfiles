@@ -1,16 +1,17 @@
 local colors = require("colors")
-local icons  = require("icons")
-
 local workspace_count = 9
+local max_apps = 4
+local script_path = os.getenv("HOME") .. "/.config/sketchybar/helpers/spaces_helper.py"
 
 for i = 1, workspace_count do
   local index = i
-  local props = {
+
+  sbar.add("item", "space." .. index, {
     label = {
       string    = tostring(index),
       color     = colors.subtle,
       padding_left = 6,
-      padding_right = 6,
+      padding_right = 2,
     },
     background = {
       color    = colors.transparent,
@@ -19,8 +20,25 @@ for i = 1, workspace_count do
     },
     click_script = "omniwmctl workspace focus-name " .. tostring(index),
     position = "left",
-  }
-  sbar.add("item", "space." .. index, props)
+  })
+
+  for j = 1, max_apps do
+    sbar.add("item", "space." .. index .. ".app." .. j, {
+      icon   = { drawing = false },
+      label  = { drawing = false },
+      background = {
+        image            = "",
+        ["image.scale"]  = 0.5,
+        drawing          = false,
+        height           = 28,
+        color            = 0x00000000,
+      },
+      width      = 18,
+      padding_left = 0,
+      padding_right = 0,
+      position   = "left",
+    })
+  end
 end
 
 sbar.add("item", "spaces.right_pad", {
@@ -28,44 +46,8 @@ sbar.add("item", "spaces.right_pad", {
   position = "left",
 })
 
-local function build_label(label, apps)
-  local s = label
-  for i = 1, #apps do
-    if i > 4 then
-      s = s .. " +" .. tostring(#apps - 4)
-      break
-    end
-    local ic = icons.app[apps[i]] or "·"
-    s = s .. " " .. ic
-  end
-  return s
-end
-
 local function update()
-  sbar.exec([[
-python3 -c "
-import subprocess, json, sys
-try:
-    ws = json.loads(subprocess.check_output(['omniwmctl', 'query', 'workspaces', '--current', '--format', 'json'], stderr=subprocess.DEVNULL))
-    print('active:' + str(ws['result']['payload']['workspaces'][0]['number']))
-except:
-    print('active:-1')
-try:
-    wins = json.loads(subprocess.check_output(['omniwmctl', 'query', 'windows', '--fields', 'app,workspace', '--format', 'json'], stderr=subprocess.DEVNULL))
-    by_ws = {}
-    for w in wins['result']['payload']['windows']:
-        n = w.get('workspace', {}).get('number')
-        app = w.get('app', {}).get('name', '')
-        if n is not None and app:
-            by_ws.setdefault(n, set()).add(app)
-    for i in range(1, 10):
-        apps = sorted(by_ws.get(i, []))
-        print(str(i) + ':' + ','.join(apps))
-except:
-    for i in range(1, 10):
-        print(str(i) + ':')
-" 2>/dev/null
-  ]], function(result)
+  sbar.exec("python3 " .. script_path .. " 2>/dev/null", function(result)
     if not result then return end
     local lines = {}
     for line in result:gmatch("[^\n]+") do
@@ -76,23 +58,37 @@ except:
     local active = tonumber(active_line:match("active:(%-?%d+)")) or -1
 
     for i = 1, workspace_count do
-      local ws_info = lines[i + 1] or ""
-      local ws_num, apps_csv = ws_info:match("(%d+):(.*)")
-      ws_num = tonumber(ws_num) or i
+      local is_active = (i == active)
+      sbar.set("space." .. i, {
+        label      = { color = is_active and colors.text or colors.subtle },
+        background = { color = is_active and colors.love or colors.transparent },
+      })
 
+      local ws_info = lines[i + 1] or ""
+      local _, apps_str = ws_info:match("(%d+):(.*)")
       local apps = {}
-      if apps_csv and apps_csv ~= "" then
-        for app in apps_csv:gmatch("[^,]+") do
-          table.insert(apps, app)
+      if apps_str and apps_str ~= "" then
+        for entry in apps_str:gmatch("[^,]+") do
+          local name, path = entry:match("([^|]+)|(.+)")
+          if name and path then
+            table.insert(apps, path)
+          end
         end
       end
 
-      local label_str = build_label(tostring(ws_num), apps)
-
-      sbar.set("space." .. ws_num, {
-        label = { string = label_str, color = (ws_num == active) and colors.text or colors.subtle },
-        background = { color = (ws_num == active) and colors.love or colors.transparent },
-      })
+      for j = 1, max_apps do
+        local item = "space." .. i .. ".app." .. j
+        if j <= #apps and apps[j] ~= "" then
+          sbar.set(item, {
+            background = {
+              image   = apps[j],
+              drawing = true,
+            },
+          })
+        else
+          sbar.set(item, { background = { drawing = false } })
+        end
+      end
     end
   end)
 end
