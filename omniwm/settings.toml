@@ -819,3 +819,35 @@ name = "5"
 
 [workspaces.monitorAssignment]
 type = "main"
+
+[[workspaces]]
+id = "7247E1A1-DD16-4B26-8803-3608ADF15EFE"
+layoutType = "dwindle"
+name = "6"
+
+[workspaces.monitorAssignment]
+type = "main"
+
+[[workspaces]]
+id = "279B330C-AD3E-42E5-B309-FDA9FD3D258F"
+layoutType = "dwindle"
+name = "7"
+
+[workspaces.monitorAssignment]
+type = "main"
+
+[[workspaces]]
+id = "1EDA8CAD-212C-4BFA-8CD1-A93D0A230F31"
+layoutType = "dwindle"
+name = "8"
+
+[workspaces.monitorAssignment]
+type = "main"
+
+[[workspaces]]
+id = "41D0CD25-44A6-4BEC-8E9D-1A93FF346E88"
+layoutType = "dwindle"
+name = "9"
+
+[workspaces.monitorAssignment]
+type = "main"
