@@ -38,6 +38,16 @@ if [ ! -f "$HOME/Library/Fonts/sketchybar-app-font.ttf" ]; then
     -o "$HOME/Library/Fonts/sketchybar-app-font.ttf" 2>/dev/null || true
 fi
 
+# Copy widget icons
+echo "  copying widget icons..."
+mkdir -p "$HOME/.config/sketchybar/app-icons"
+shopt -s nullglob
+for icon in "$DOTFILES/assets/icons/"*.png; do
+  cp "$icon" "$HOME/.config/sketchybar/app-icons/"
+  echo "    copied: $(basename "$icon")"
+done
+shopt -u nullglob
+
 # Deploy config — symlink every file in sketchybar/ except install.sh
 echo "  deploying config..."
 mkdir -p "$HOME/.config/sketchybar"

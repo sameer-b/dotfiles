@@ -13,6 +13,7 @@ sbar.add("item", "center.notch", {
 
 require("items.calendar")
 require("items.battery")
+require("items.memory")
 require("items.cpu")
 
 local radius = 20
@@ -22,7 +23,7 @@ sbar.add("bracket", "bracket.left", { "apple.logo", "/space\\..*/", "spaces.righ
 })
 
 sbar.add("bracket", "bracket.right", {
-  "widgets.cpu", "widgets.battery", "widgets.day", "widgets.month", "widgets.daynum", "widgets.time", "widgets.ampm",
+  "widgets.cpu.icon", "widgets.cpu.label", "widgets.memory.icon", "widgets.memory.label", "widgets.battery.icon", "widgets.battery.label", "widgets.day", "widgets.month", "widgets.daynum", "widgets.time", "widgets.ampm",
 }, {
   background = { color = colors.bg1, corner_radius = radius, height = 33, border_width = 0 },
 })
