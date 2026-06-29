@@ -10,7 +10,7 @@ end
 sbar.add("item", "widgets.date", {
   position  = "right",
   icon      = { drawing = false },
-  label     = { string = "", font = { size = 12 } },
+  label     = { string = "", font = { size = 15 } },
   padding_left = 4,
   padding_right = 2,
 })
@@ -18,7 +18,7 @@ sbar.add("item", "widgets.date", {
 sbar.add("item", "widgets.time", {
   position  = "right",
   icon      = { drawing = false },
-  label     = { string = "", font = { size = 12 } },
+  label     = { string = "", font = { size = 15 } },
   padding_left = 2,
   padding_right = 4,
 })

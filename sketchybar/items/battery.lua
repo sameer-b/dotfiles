@@ -36,7 +36,7 @@ sbar.add("item", "widgets.battery", {
   label        = { drawing = true },
   update_freq  = 120,
   padding_left = 4,
-  padding_right = 8,
+  padding_right = 9,
 })
 
 update()

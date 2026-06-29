@@ -9,7 +9,7 @@ for ws = 1, WORKSPACE_COUNT do
     label = {
       string    = tostring(ws),
       color     = colors.subtle,
-      padding_left  = 6,
+      padding_left  = 7,
       padding_right = 2,
     },
     click_script = "omniwmctl workspace focus-name " .. tostring(ws),
@@ -25,10 +25,10 @@ for ws = 1, WORKSPACE_COUNT do
         image            = "",
         ["image.scale"]  = 0.5,
         drawing          = true,
-        height           = 28,
+        height           = 30,
         color            = 0x00000000,
       },
-      width      = 18,
+      width      = 22,
       padding_left  = 0,
       padding_right = 0,
       position   = "left",
@@ -36,14 +36,14 @@ for ws = 1, WORKSPACE_COUNT do
   end
 
   sbar.add("item", string.format("space.%s.pad", ws), {
-    label    = { string = "", width = 6 },
+    label    = { string = "", width = 7 },
     icon     = { drawing = false },
     position = "left",
   })
 end
 
 sbar.add("item", "spaces.right_pad", {
-  label = { string = "", width = 5 },
+  label = { string = "", width = 6 },
   position = "left",
 })
 
@@ -60,7 +60,7 @@ for ws = 1, WORKSPACE_COUNT do
     background = {
       color    = colors.transparent,
       height   = 3,
-      y_offset = 12,
+      y_offset = 15,
     },
   })
 end

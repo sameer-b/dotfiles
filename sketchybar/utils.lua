@@ -4,8 +4,8 @@ function menubar_section(items)
   sbar.add("bracket", items, {
     background = {
       color        = colors.bar.bg,
-      corner_radius = 16,
-      height       = 28,
+      corner_radius = 20,
+      height       = 35,
       border_width = 1,
       border_color = colors.bar.border,
     },
