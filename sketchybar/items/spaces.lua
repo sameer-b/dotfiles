@@ -4,15 +4,12 @@ local WORKSPACE_COUNT = 9
 local MAX_APP_SLOTS   = 4
 local HELPER_SCRIPT   = os.getenv("HOME") .. "/.config/sketchybar/helpers/spaces_helper.py"
 
-local rainbow = { colors.red, colors.love, colors.orange, colors.yellow, colors.green, colors.pine, colors.blue, colors.iris, colors.magenta }
-
 for ws = 1, WORKSPACE_COUNT do
   sbar.add("item", "space." .. ws, {
     label = {
       string    = tostring(ws),
-      color     = rainbow[ws],
-      font      = "Hack Nerd Font Mono:Bold:12.0",
-      padding_left  = 5,
+      color     = colors.subtle,
+      padding_left  = 6,
       padding_right = 2,
     },
     click_script = "omniwmctl workspace focus-name " .. tostring(ws),
@@ -26,12 +23,12 @@ for ws = 1, WORKSPACE_COUNT do
       label    = { drawing = false },
       background = {
         image            = "",
-        ["image.scale"]  = 0.35,
+        ["image.scale"]  = 0.5,
         drawing          = true,
-        height           = 16,
+        height           = 28,
         color            = 0x00000000,
       },
-      width      = 12,
+      width      = 18,
       padding_left  = 0,
       padding_right = 0,
       position   = "left",
@@ -46,7 +43,7 @@ for ws = 1, WORKSPACE_COUNT do
 end
 
 sbar.add("item", "spaces.right_pad", {
-  label = { string = "", width = 3 },
+  label = { string = "", width = 5 },
   position = "left",
 })
 
@@ -61,10 +58,9 @@ for ws = 1, WORKSPACE_COUNT do
   sbar.exec("sketchybar --add bracket group." .. ws .. " " .. table.concat(members, " ") .. " 2>/dev/null")
   sbar.set("group." .. ws, {
     background = {
-      color         = colors.transparent,
-      height        = 18,
-      y_offset      = 0,
-      corner_radius = 9,
+      color    = colors.transparent,
+      height   = 3,
+      y_offset = 12,
     },
   })
 end
@@ -100,44 +96,32 @@ local function update()
 
     local active = active_workspace(lines)
 
-    sbar.anim("ease_in_out", 6, function()
-      for ws = 1, WORKSPACE_COUNT do
-        local active_color = (ws == active) and colors.text or rainbow[ws]
-        local active_bg    = (ws == active) and 0x30ffffff or colors.transparent
-        local active_brdr  = (ws == active) and rainbow[ws] or colors.transparent
-        local has_shadow   = (ws == active)
+    for ws = 1, WORKSPACE_COUNT do
+      local active_color = (ws == active) and colors.text or colors.subtle
+      local underline    = (ws == active) and colors.love or colors.transparent
 
-        sbar.set("space." .. ws, {
-          label  = { color = active_color },
-        })
+      sbar.set("space." .. ws, {
+        label = { color = active_color },
+      })
 
-        sbar.set("group." .. ws, {
-          background = {
-            color         = active_bg,
-            height        = 18,
-            y_offset      = 0,
-            corner_radius = 9,
-            border_width  = (ws == active) and 1 or 0,
-            border_color  = active_brdr,
-            shadow        = has_shadow and { drawing = true, color = rainbow[ws] } or { drawing = false },
-          },
-        })
+      sbar.set("group." .. ws, {
+        background = { color = underline },
+      })
 
-        local apps = parse_apps(lines[ws + 1])
-        for slot = 1, MAX_APP_SLOTS do
-          local item = string.format("space.%s.app.%s", ws, slot)
-          local icon = apps[slot]
-          if icon then
-            sbar.set(item, {
-              drawing    = true,
-              background = { image = icon, drawing = true },
-            })
-          else
-            sbar.set(item, { drawing = false })
-          end
+      local apps = parse_apps(lines[ws + 1])
+      for slot = 1, MAX_APP_SLOTS do
+        local item = string.format("space.%s.app.%s", ws, slot)
+        local icon = apps[slot]
+        if icon then
+          sbar.set(item, {
+            drawing    = true,
+            background = { image = icon, drawing = true },
+          })
+        else
+          sbar.set(item, { drawing = false })
         end
       end
-    end)
+    end
   end)
 end
 
