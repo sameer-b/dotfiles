@@ -22,7 +22,7 @@ sbar.add("bracket", "bracket.left", { "apple.logo", "/space\\..*/", "spaces.righ
 })
 
 sbar.add("bracket", "bracket.right", {
-  "widgets.cpu", "widgets.battery", "widgets.date", "widgets.time",
+  "widgets.cpu", "widgets.battery", "widgets.day", "widgets.month", "widgets.daynum", "widgets.time", "widgets.ampm",
 }, {
   background = { color = colors.bg1, corner_radius = radius, height = 33, border_width = 0 },
 })
