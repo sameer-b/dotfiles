@@ -7,20 +7,20 @@ local function update()
   sbar.set("widgets.time", { label = { string = time, color = colors.accent } })
 end
 
-sbar.add("item", "widgets.date", {
-  position  = "right",
-  icon      = { drawing = false },
-  label     = { string = "", font = { size = 15 } },
-  padding_left = 4,
-  padding_right = 2,
-})
-
 sbar.add("item", "widgets.time", {
   position  = "right",
   icon      = { drawing = false },
   label     = { string = "", font = { size = 15 } },
   padding_left = 2,
   padding_right = 4,
+})
+
+sbar.add("item", "widgets.date", {
+  position  = "right",
+  icon      = { drawing = false },
+  label     = { string = "", font = { size = 15 } },
+  padding_left = 4,
+  padding_right = 2,
 })
 
 update()
