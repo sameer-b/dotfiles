@@ -14,7 +14,8 @@ macOS-centric dotfiles for a tiling window manager setup with Ghostty terminal, 
 dotfiles/
 ├── configure.sh              # Master installer — sources each install.sh
 ├── AGENTS.md                 # This file
-├── assets/cats/              # 4 cat PNG images (cat1.png–cat4.png)
+├── assets/cats/              # 4 cat PNG images (cat2.png, cat4.png–cat6.png)
+├── assets/icons/             # SketchyBar widget PNG icons
 ├── scripts/
 │   ├── lib.sh                # Shared helpers: link_file(), sed_i()
 │   ├── catfetch              # Wrapper: fastfetch + random cat logo
@@ -35,14 +36,14 @@ dotfiles/
     ├── bar.lua               # Bar appearance (transparent, blur, margin)
     ├── default.lua           # Default item styles (font, colors, padding)
     ├── settings.lua          # Font family + padding constants
-    ├── colors.lua            # Catppuccin Mocha palette
-    ├── icons.lua             # Nerd Font icon mappings
-    ├── utils.lua             # Helper: menubar_section()
+    ├── colors.lua            # Active SketchyBar colors
     ├── items/
     │   ├── init.lua          # Assembles left/right brackets
     │   ├── apple.lua         # Apple logo → System Settings
     │   ├── spaces.lua        # 9 workspace indicators with app icons
-    │   ├── battery.lua       # Battery percentage + icon (pmset)
+    │   ├── battery.lua       # Battery percentage + PNG icon (pmset)
+    │   ├── cpu.lua           # CPU percentage + PNG icon
+    │   ├── memory.lua        # Memory pressure + PNG icon
     │   └── calendar.lua      # Date and time
     └── helpers/
         └── spaces_helper.py  # Python: queries OmniWM for windows/icons
@@ -61,31 +62,21 @@ dotfiles/
 - **Bash nullglob** is used before globbing (set via `shopt -s nullglob` and reset after with `shopt -u nullglob`)
 
 ### Color Scheme: Catppuccin Mocha
-All configs use the same palette (from `sketchybar/colors.lua` as the source of truth):
+SketchyBar keeps only the active colors it currently references in `sketchybar/colors.lua`:
 
 | Name      | Hex       | Usage                    |
 |-----------|-----------|--------------------------|
-| base      | `#1e1e2e` | Background               |
-| surface   | `#313244` | Surface                  |
-| overlay   | `#45475a` | Borders                  |
-| muted     | `#6c7086` | Muted text               |
 | subtle    | `#9399b2` | Subtle text              |
 | text      | `#cdd6f4` | Primary text             |
 | love      | `#f38ba8` | Pink (active underline)  |
-| gold      | `#f9e2af` |                          |
-| rose      | `#f5e0dc` |                          |
-| pine      | `#94e2d5` |                          |
-| foam      | `#89dceb` |                          |
-| iris      | `#cba6f7` | Accent/purple            |
 | red       | `#ed8796` | Low battery warning      |
 | green     | `#a6da95` |                          |
 | blue      | `#8aadf4` |                          |
 | yellow    | `#eed49f` |                          |
 | orange    | `#f5a97f` | Medium battery warning   |
-| magenta   | `#c6a0f6` |                          |
+| transparent | `0x00000000` | Transparent backgrounds |
 | bg1       | `0x60000000` | Bracket background (semi-transparent black) |
-| bg2       | `0x90000000` | Darker bracket background |
-| bg3       | `0x80313244` | Mixed bracket background  |
+| popup     | `0xf0181926` | Popup background       |
 
 In Lua: colors use `0xAARRGGBB` format.  
 In Ghostty config: standard theme name `Catppuccin Mocha`.  
@@ -95,7 +86,7 @@ In OmniWM `settings.toml`: RGB floats (e.g., accent border = `1.0, 0.37, 0.99` ~
 - **Primary**: `Hack Nerd Font Mono`
 - **sketchybar-app-font** (TTF) for workspace app icons — installed via GitHub release
 - **SF Symbols** (brew cask) — available but not directly referenced in current config
-- Nerd Font icons used throughout fastfetch and sketchybar (e.g., ``, ``, ``)
+- Nerd Font icons are still used in fastfetch. SketchyBar uses PNG assets for Apple, CPU, memory, battery, and extracted app icons for workspaces.
 
 ### Transparency & Blur
 - Ghostty: `background-opacity = 0.5`, `background-blur-radius = 30`, `unfocused-split-opacity = 0.7`
@@ -131,9 +122,9 @@ In OmniWM `settings.toml`: RGB floats (e.g., accent border = `1.0, 0.37, 0.99` ~
 
 ### SketchyBar (Lua configs)
 - **Top bar**: transparent, blur 30, y-offset 8, margin 128 (notch aware)
-- **Left bracket**: Apple logo (iris purple) → 9 workspace indicators with app icons (pink underline on active) → spacer
+- **Left bracket**: Apple PNG logo → 9 workspace indicators with app icons (pink underline on active) → spacer
 - **Center**: 200px hidden spacer (notch filler)
-- **Right bracket**: battery icon/percentage → date → time (accent color)
+- **Right brackets**: CPU → memory → battery → date/time
 - **Brackets**: `bg1` (`0x60000000`), corner radius 16, height 28, border 0
 - **Items**: Hack Nerd Font Mono, Bold 12-13pt
 - **Event-driven**: `omniwmctl watch active-workspace,windows-changed` triggers `space_update` event
@@ -163,7 +154,7 @@ In OmniWM `settings.toml`: RGB floats (e.g., accent border = `1.0, 0.37, 0.99` ~
    - **ghostty/install.sh** — symlinks config to macOS/Linux path, links `ghostty-init`
    - **fastfetch/install.sh** — copies JSONC (with logo placeholder substitution via `sed_i`), copies cat images, links `catfetch`, symlinks `assets/cats` to `~/Pictures/cats`
    - **omniwm/install.sh** — symlinks `settings.toml` (macOS only, skips on other OS)
-   - **sketchybar/install.sh** — taps brew, installs sketchybar/lua/sf-symbols, installs SbarLua from GitHub, installs sketchybar-app-font, symlinks all sketchybar/ files (except install.sh), starts sketchybar service
+   - **sketchybar/install.sh** — taps brew, installs sketchybar/lua/sf-symbols, installs SbarLua from GitHub, installs sketchybar-app-font, copies widget PNG icons, symlinks all sketchybar/ files (except install.sh), starts sketchybar service
 3. Each sub-install.sh is idempotent (uses `link_file` with backup, `--force` installs)
 
 ---
@@ -185,8 +176,8 @@ In OmniWM `settings.toml`: RGB floats (e.g., accent border = `1.0, 0.37, 0.99` ~
 
 ## Patterns & Rules for Editing
 
-1. **Catppuccin Mocha colors must be consistent** across all files. If adding a new component, use the palette from `colors.lua`. In non-Lua contexts, use the corresponding hex/RGB values.
-2. **Nerd Font icons** — prefer existing icons from `icons.lua` or fastfetch config. New icons should use Nerd Font v3 glyphs.
+1. **Catppuccin Mocha colors must be consistent** across all files. If adding a new SketchyBar color, add it to `colors.lua` only when it is actually referenced.
+2. **Icons** — SketchyBar widget icons live in `assets/icons/` and are copied to `~/.config/sketchybar/app-icons/`; workspace app icons are extracted by `spaces_helper.py`. Fastfetch may use Nerd Font v3 glyphs.
 3. **Transparency** — stick to the 0.5 bg / 30 blur pattern for terminals, and `0x60XXXXXX` / `0x90XXXXXX` alpha patterns for sketchybar backgrounds.
 4. **Hack Nerd Font Mono** is the single font family used everywhere. Don't add other font families without a strong reason.
 5. **No shell rc files** should be added to this repo — it's strictly WM/visual layer.
