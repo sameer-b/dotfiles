@@ -23,7 +23,7 @@ sbar.add("item", "widgets.memory.label", {
   label        = { drawing = true },
   update_freq  = 15,
   padding_left = 0,
-  padding_right = 8,
+  padding_right = 10,
 })
 
 sbar.add("item", "widgets.memory.icon", {
@@ -36,9 +36,8 @@ sbar.add("item", "widgets.memory.icon", {
     height          = 28,
     color           = 0x00000000,
   },
-  padding_left  = 12,
-  padding_right = 0,
-  width         = 28,
+  padding_left  = 10,
+  padding_right = 10
 })
 
 update()

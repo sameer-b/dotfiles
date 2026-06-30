@@ -1,5 +1,5 @@
 return {
-  paddings       = 3,
+  paddings       = 5,
   group_paddings = 6,
   font           = {
     text    = "Hack Nerd Font Mono",

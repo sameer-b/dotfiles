@@ -32,7 +32,7 @@ sbar.default({
     },
     blur_radius = 61,
   },
-  padding_left  = 4,
-  padding_right = 4,
+  padding_left  = 5,
+  padding_right = 5,
   scroll_texts  = true,
 })

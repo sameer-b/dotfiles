@@ -13,7 +13,7 @@ sbar.add("item", "widgets.ampm", {
   icon      = { drawing = false },
   label     = { string = "", font = { size = 15 } },
   padding_left = 0,
-  padding_right = 4,
+  padding_right = 10,
 })
 
 sbar.add("item", "widgets.time", {
@@ -44,7 +44,7 @@ sbar.add("item", "widgets.day", {
   position  = "right",
   icon      = { drawing = false },
   label     = { string = "", color = colors.yellow, font = { size = 15 } },
-  padding_left = 4,
+  padding_left = 10,
   padding_right = 0,
 })
 

@@ -23,7 +23,7 @@ sbar.add("item", "widgets.cpu.label", {
   label        = { drawing = true },
   update_freq  = 10,
   padding_left = 0,
-  padding_right = 15,
+  padding_right = 10,
 })
 
 sbar.add("item", "widgets.cpu.icon", {
@@ -36,9 +36,8 @@ sbar.add("item", "widgets.cpu.icon", {
     height          = 28,
     color           = 0x00000000,
   },
-  padding_left  = 2,
-  padding_right = 2,
-  width         = 28,
+  padding_left  = 10,
+  padding_right = 0
 })
 
 update()

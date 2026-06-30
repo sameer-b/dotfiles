@@ -25,8 +25,8 @@ sbar.add("item", "widgets.battery.label", {
   icon         = { drawing = false },
   label        = { drawing = true },
   update_freq  = 120,
-  padding_left = 0,
-  padding_right = 2,
+  padding_left = 10,
+  padding_right = 10,
 })
 
 sbar.add("item", "widgets.battery.icon", {
@@ -39,9 +39,8 @@ sbar.add("item", "widgets.battery.icon", {
     height          = 28,
     color           = 0x00000000,
   },
-  padding_left  = 1,
-  padding_right = 2,
-  width         = 36,
+  padding_left  = 10,
+  padding_right = 0
 })
 
 update()

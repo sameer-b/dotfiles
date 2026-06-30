@@ -4,7 +4,7 @@ sbar.add("item", "apple.logo", {
   icon = {
     string = icons.apple,
     color  = 0xffcba6f7,
-    size   = 22,
+    size   = 48,
   },
   position   = "left",
   padding_left = 13,
