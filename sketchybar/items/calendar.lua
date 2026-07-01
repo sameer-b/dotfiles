@@ -20,6 +20,7 @@ sbar.add("item", "widgets.time", {
   position  = "right",
   icon      = { drawing = false },
   label     = { string = "", font = { size = 15 } },
+  update_freq  = 60,
   padding_left = 2,
   padding_right = 2,
 })
@@ -49,6 +50,6 @@ sbar.add("item", "widgets.day", {
 })
 
 update()
-sbar.subscribe("widgets.day", "routine", update)
-sbar.subscribe("widgets.day", "forced", update)
-sbar.subscribe("widgets.day", "system_woke", update)
+sbar.subscribe("widgets.time", "routine", update)
+sbar.subscribe("widgets.time", "forced", update)
+sbar.subscribe("widgets.time", "system_woke", update)
