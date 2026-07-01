@@ -15,4 +15,9 @@ if [ "$os" != "Darwin" ]; then
   [ "${BASH_SOURCE[0]}" = "$0" ] && exit 0 || return 0
 fi
 
+if ! type omniwmctl &>/dev/null; then
+  echo "  installing omniwm via brew..."
+  brew install BarutSRB/tap/omniwm
+fi
+
 link_file "$DOTFILES/omniwm/settings.toml" "$HOME/.config/omniwm/settings.toml"
