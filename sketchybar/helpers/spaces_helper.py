@@ -7,6 +7,7 @@ import sys
 CACHE_DIR = os.path.expanduser("~/.config/sketchybar/app-icons")
 WORKSPACE_COUNT = 9
 
+
 def find_app_path(bundle_id):
     try:
         r = subprocess.run(
@@ -20,6 +21,7 @@ def find_app_path(bundle_id):
     except:
         pass
     return None
+
 
 def extract_icon(app_name, bundle_id):
     os.makedirs(CACHE_DIR, exist_ok=True)
@@ -50,45 +52,51 @@ def extract_icon(app_name, bundle_id):
     except:
         return None
 
+
 def main():
     try:
         r = subprocess.run(
-            ["omniwmctl", "query", "workspaces", "--current", "--format", "json"],
+            ["aerospace", "list-workspaces", "--focused", "--format", "%{workspace}"],
             capture_output=True, text=True, timeout=5
         )
-        ws_data = json.loads(r.stdout)
-        active = ws_data["result"]["payload"]["workspaces"][0]["number"]
+        active = int(r.stdout.strip())
     except:
         active = -1
 
     print(f"active:{active}")
 
-    try:
-        r = subprocess.run(
-            ["omniwmctl", "query", "windows", "--fields", "app,workspace", "--format", "json"],
-            capture_output=True, text=True, timeout=5
-        )
-        win_data = json.loads(r.stdout)
-        wins = win_data["result"]["payload"]["windows"]
-    except:
-        wins = []
-
     by_ws = {}
     seen = set()
-    for w in wins:
-        n = w.get("workspace", {}).get("number")
-        app = w.get("app", {})
-        name = app.get("name", "")
-        bid = app.get("bundleId", "")
-        if n is not None and name and (n, name) not in seen:
-            seen.add((n, name))
-            path = extract_icon(name, bid)
-            by_ws.setdefault(n, []).append((name, path or ""))
+
+    try:
+        r = subprocess.run(
+            ["aerospace", "list-windows", "--all", "--format", "%{app-name}|%{app-bundle-id}|%{workspace}"],
+            capture_output=True, text=True, timeout=5
+        )
+        for line in r.stdout.strip().split("\n"):
+            line = line.strip()
+            if not line:
+                continue
+            parts = line.split("|")
+            if len(parts) < 3:
+                continue
+            name, bid, ws_str = parts[0], parts[1], parts[2]
+            try:
+                n = int(ws_str)
+            except:
+                continue
+            if name and (n, name) not in seen:
+                seen.add((n, name))
+                path = extract_icon(name, bid)
+                by_ws.setdefault(n, []).append((name, path or ""))
+    except:
+        pass
 
     for i in range(1, WORKSPACE_COUNT + 1):
         apps = by_ws.get(i, [])
         parts = [f"{name}|{path}" for name, path in apps]
         print(f"{i}:" + ",".join(parts))
+
 
 if __name__ == "__main__":
     main()

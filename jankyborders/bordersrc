@@ -1,0 +1,9 @@
+#!/bin/bash
+borders \
+  width=6.0 \
+  style=round \
+  order=above \
+  hidpi=on \
+  "active_color=glow(0xffff63ff)" \
+  "inactive_color=gradient(top_left=0xffC7E7A7,bottom_right=0xffE7A7E7)" \
+  background_color=0x302c2e34

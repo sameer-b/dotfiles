@@ -2,7 +2,7 @@
 
 ## Overview
 
-macOS-centric dotfiles for a tiling window manager setup with Ghostty terminal, OmniWM, SketchyBar status bar, and fastfetch system info. The aesthetic is **Catppuccin Mocha + Hack Nerd Font Mono + transparency/blur + cat-themed fastfetch**.
+macOS-centric dotfiles for a tiling window manager setup with AeroSpace, Ghostty terminal, OmniWM, SketchyBar status bar, and fastfetch system info. The aesthetic is **Catppuccin Mocha + Hack Nerd Font Mono + transparency/blur + cat-themed fastfetch**.
 
 **No shell rc files (`.zshrc`, `.bashrc`), no Git config, no editor configs live here.** This repo only manages the visual/WM layer.
 
@@ -16,6 +16,9 @@ dotfiles/
 ├── AGENTS.md                 # This file
 ├── assets/cats/              # 4 cat PNG images (cat2.png, cat4.png–cat6.png)
 ├── assets/icons/             # SketchyBar widget PNG icons
+├── aero space/
+│   ├── aerospace.toml        # AeroSpace tiling WM config
+│   └── install.sh
 ├── scripts/
 │   ├── lib.sh                # Shared helpers: link_file(), sed_i()
 │   ├── catfetch              # Wrapper: fastfetch + random cat logo
@@ -25,6 +28,12 @@ dotfiles/
 │   └── install.sh
 ├── ghostty/
 │   ├── config                # Ghostty terminal config
+│   └── install.sh
+├── jankyborders/
+│   ├── bordersrc             # JankyBorders config (width, style, colors)
+│   └── install.sh
+├── nvim/
+│   ├── init.lua              # Minimal Neovim config (lazy.nvim, LSP, Telescope)
 │   └── install.sh
 ├── omniwm/
 │   ├── settings.toml         # OmniWM tiling WM config (821 lines)
@@ -139,6 +148,21 @@ In OmniWM `settings.toml`: RGB floats (e.g., accent border = `1.0, 0.37, 0.99` ~
 - Outputs: `active:<n>` on line 1, then `workspace_number:app1|path1,app2|path2,...` per line
 - Uses `mdfind` to locate `.app` bundles by bundle ID
 
+### JankyBorders (`jankyborders/bordersrc`, 9 lines)
+- **Style**: round, width 6px, order above
+- **Active color**: glow pink (`#ff63ff`)
+- **Inactive color**: gradient (top-left green, bottom-right pink)
+- **Background**: semi-transparent dark (`#2c2e34` at 19% alpha)
+- **Installed via**: `felixkratz/formulae/borders` brew tap, started as brew service
+
+### AeroSpace (`aero space/aerospace.toml`)
+- **Gaps**: inner 8px, outer top 50px (for menubar), other sides 5px
+- **Borders**: 5px, active `#cba6f7` (mauve), inactive `#585b70` (surface2)
+- **9 workspaces** with Option+1-9 switching, Option+Shift+1-9 to move windows
+- **Focus/move**: vim-style (Option+h/j/k/l, Option+Shift+h/j/k/l)
+- **SketchyBar integration**: triggers `aerospace_workspace_change` event on workspace switch
+- **Autostart**: `start-at-login = true`
+
 ### fastfetch (`fastfetch/config.jsonc`, 172 lines)
 - **Logo**: random cat PNG (Kitty protocol), width 27, positioned left
 - **Separator**: `` in gray
@@ -151,10 +175,13 @@ In OmniWM `settings.toml`: RGB floats (e.g., accent border = `1.0, 0.37, 0.99` ~
 
 1. Sources `scripts/lib.sh` (sets `DOTFILES` and `BACKUP_DIR` variables)
 2. Runs each component's `install.sh` in order:
+   - **aero space/install.sh** — installs AeroSpace via brew, symlinks `aerospace.toml`
+   - **jankyborders/install.sh** — installs `felixkratz/formulae/borders` via brew, symlinks `bordersrc`, starts brew service
    - **ghostty/install.sh** — symlinks config to macOS/Linux path, links `ghostty-init`
    - **fastfetch/install.sh** — copies JSONC (with logo placeholder substitution via `sed_i`), copies cat images, links `catfetch`, symlinks `assets/cats` to `~/Pictures/cats`
    - **omniwm/install.sh** — symlinks `settings.toml` (macOS only, skips on other OS)
    - **sketchybar/install.sh** — taps brew, installs sketchybar/lua/sf-symbols, installs SbarLua from GitHub, installs sketchybar-app-font, copies widget PNG icons, symlinks all sketchybar/ files (except install.sh), starts sketchybar service
+   - **nvim/install.sh** — installs neovim via brew/pacman, symlinks `init.lua`
 3. Each sub-install.sh is idempotent (uses `link_file` with backup, `--force` installs)
 
 ---
@@ -163,8 +190,11 @@ In OmniWM `settings.toml`: RGB floats (e.g., accent border = `1.0, 0.37, 0.99` ~
 
 | Config | Destination |
 |--------|-------------|
+| AeroSpace | `~/.config/aerospace/aerospace.toml` |
 | Ghostty (macOS) | `~/Library/Application Support/com.mitchellh.ghostty/config` |
 | Ghostty (Linux) | `~/.config/ghostty/config` |
+| JankyBorders | `~/.config/borders/bordersrc` |
+| Neovim | `~/.config/nvim/init.lua` |
 | OmniWM | `~/.config/omniwm/settings.toml` |
 | SketchyBar | `~/.config/sketchybar/` |
 | fastfetch | `~/.config/fastfetch/config.jsonc` |

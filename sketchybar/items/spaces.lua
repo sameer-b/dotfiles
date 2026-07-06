@@ -12,7 +12,7 @@ for ws = 1, WORKSPACE_COUNT do
       padding_left  = 7,
       padding_right = 2,
     },
-    click_script = "omniwmctl workspace focus-name " .. tostring(ws),
+    click_script = "aerospace workspace " .. tostring(ws),
     position = "left",
   })
 
