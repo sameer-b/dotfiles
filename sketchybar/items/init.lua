@@ -53,7 +53,7 @@ add_right_spacer("spacer.cpu.gpu")
 
 require("items.gpu")
 
-add_bracket("bracket.left", { "apple.logo", "/space\\..*/", "spaces.right_pad" })
+add_bracket("bracket.left", { "apple.logo", "spaces.right_pad" })
 add_bracket("bracket.right.cpu", { "widgets.cpu.icon", "widgets.cpu.label", "widgets.temp.icon", "widgets.temp.label" })
 add_bracket("bracket.right.gpu", { "widgets.gpu.icon", "widgets.gpu.label", "widgets.gpu.temp.icon", "widgets.gpu.temp.label" })
 add_bracket("bracket.right.memory", { "widgets.memory.icon", "widgets.memory.label" })

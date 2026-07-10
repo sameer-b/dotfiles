@@ -84,7 +84,7 @@ SketchyBar keeps only the active colors it currently references in `sketchybar/c
 | yellow    | `#eed49f` |                          |
 | orange    | `#f5a97f` | Medium battery warning   |
 | transparent | `0x00000000` | Transparent backgrounds |
-| bg1       | `0x60000000` | Bracket background (semi-transparent black) |
+| bg1       | `0x00000000` | Bracket background (transparent) |
 | popup     | `0xf0181926` | Popup background       |
 
 In Lua: colors use `0xAARRGGBB` format.  
@@ -134,7 +134,7 @@ In OmniWM `settings.toml`: RGB floats (e.g., accent border = `1.0, 0.37, 0.99` ~
 - **Left bracket**: Apple PNG logo → 9 workspace indicators with app icons (pink underline on active) → spacer
 - **Center**: 200px hidden spacer (notch filler)
 - **Right brackets**: CPU → memory → battery → date/time
-- **Brackets**: `bg1` (`0x60000000`), corner radius 16, height 28, border 0
+- **Brackets**: `bg1` (`0x00000000`, transparent), corner radius 16, height 28, border 0
 - **Items**: Hack Nerd Font Mono, Bold 12-13pt
 - **Event-driven**: `omniwmctl watch active-workspace,windows-changed` triggers `space_update` event
 - **Battery**: updates every 120s, on power source change, on system wake; colors: red ≤15%, orange ≤25%

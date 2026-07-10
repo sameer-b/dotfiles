@@ -20,7 +20,7 @@ fi
 brew tap FelixKratz/formulae 2>/dev/null || true
 brew trust --quiet FelixKratz/formulae 2>/dev/null || true
 brew install sketchybar 2>/dev/null || true
-brew install malpern/tap/sketchybar-toggle 2>/dev/null || true
+# brew install malpern/tap/sketchybar-toggle 2>/dev/null || true
 brew install lua 2>/dev/null || true
 brew install macmon 2>/dev/null || true
 brew install --cask sf-symbols 2>/dev/null || true

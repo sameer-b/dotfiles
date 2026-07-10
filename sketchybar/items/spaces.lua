@@ -26,7 +26,7 @@ for ws = 1, WORKSPACE_COUNT do
         ["image.scale"]  = 0.8,
         drawing          = true,
         height           = 36,
-        color            = 0x00000000,
+        color            = colors.transparent,
       },
       width      = 24,
       padding_left  = 0,
@@ -47,6 +47,10 @@ sbar.add("item", "spaces.right_pad", {
   position = "left",
 })
 
+sbar.add("item", "spaces.handler", {
+  drawing = false,
+})
+
 for ws = 1, WORKSPACE_COUNT do
   local members = {
     "space." .. ws,
@@ -55,12 +59,12 @@ for ws = 1, WORKSPACE_COUNT do
   for slot = 1, MAX_APP_SLOTS do
     table.insert(members, string.format("space.%s.app.%s", ws, slot))
   end
-  sbar.exec("sketchybar --add bracket group." .. ws .. " " .. table.concat(members, " ") .. " 2>/dev/null")
-  sbar.set("group." .. ws, {
+  sbar.add("bracket", "group." .. ws, members, {
     background = {
-      color    = colors.transparent,
-      height   = 3,
-      y_offset = 15,
+      color         = colors.transparent,
+      corner_radius = 16,
+      height        = 28,
+      border_width  = 0,
     },
   })
 end
@@ -71,7 +75,7 @@ local function parse_result(result)
   for line in result:gmatch("[^\n]+") do
     table.insert(lines, line)
   end
-  return #lines > 1 and lines or nil
+  return lines
 end
 
 local function active_workspace(lines)
@@ -127,4 +131,4 @@ end
 
 sbar.add("event", "space_update")
 update()
-sbar.subscribe("space.1", "space_update", update)
+sbar.subscribe("spaces.handler", "space_update", update)
