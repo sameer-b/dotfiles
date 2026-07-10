@@ -16,5 +16,5 @@ if [ "$os" = "Darwin" ]; then
     brew install --cask nikitabobko/tap/aerospace
   fi
 
-  link_file "$DOTFILES/aero space/aerospace.toml" "$HOME/.config/aerospace/aerospace.tomll"
+  link_file "$DOTFILES/aero space/aerospace.toml" "$HOME/.config/aerospace/aerospace.toml"
 fi
