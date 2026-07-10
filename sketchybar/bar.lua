@@ -12,7 +12,7 @@ sbar.bar({
   padding_right = 10,
   padding_left = 10,
   y_offset = 5,
-  notch_offset = 5,
+  notch_offset = 0,
   margin = 155,
   blur_radius = 2,
   corner_radius = 13,
