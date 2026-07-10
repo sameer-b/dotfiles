@@ -47,10 +47,6 @@ sbar.add("item", "spaces.right_pad", {
   position = "left",
 })
 
-sbar.add("item", "spaces.handler", {
-  drawing = false,
-})
-
 for ws = 1, WORKSPACE_COUNT do
   local members = {
     "space." .. ws,
@@ -131,4 +127,4 @@ end
 
 sbar.add("event", "space_update")
 update()
-sbar.subscribe("spaces.handler", "space_update", update)
+sbar.subscribe("space.1", "space_update", update)
