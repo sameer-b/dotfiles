@@ -14,6 +14,6 @@ sbar.bar({
   y_offset = 5,
   notch_offset = 0,
   margin = 155,
-  blur_radius = 2,
+  blur_radius = 0,
   corner_radius = 13,
 })
