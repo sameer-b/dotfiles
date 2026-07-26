@@ -83,7 +83,7 @@ mkdir -p "$HYPR_DIR"
 # Symlink main hyprland.conf
 link_file "$DOTFILES/hyprland/hyprland.conf" "$HYPR_DIR/hyprland.conf"
 
-# Symlink ml4w-style hypr config files
+# Symlink hypr config files
 for f in "$DOTFILES"/hyprland/*.conf "$DOTFILES"/hyprland/*.lua; do
   [ -f "$f" ] || continue
   base=$(basename "$f")
@@ -115,8 +115,8 @@ done
 mkdir -p "$HYPR_DIR/assets"
 link_file "$DOTFILES/hyprland/assets/blank.png" "$HYPR_DIR/assets/blank.png"
 
-# Symlink scripts
-mkdir -p "$HYPR_DIR/scripts"
+# Symlink scripts and lib
+mkdir -p "$HYPR_DIR/scripts/lib"
 for f in "$DOTFILES/hyprland/scripts"/*.sh; do
   [ -f "$f" ] || continue
   base=$(basename "$f")
@@ -124,42 +124,14 @@ for f in "$DOTFILES/hyprland/scripts"/*.sh; do
   chmod +x "$HYPR_DIR/scripts/$base"
 done
 
-echo ":: Setting up ML4W compatibility layer"
-ML4W_DIR="$HOME/.config/ml4w"
-
-# Remove old symlink if it exists
-if [ -L "$ML4W_DIR" ]; then
-  echo "  removing existing symlink: $ML4W_DIR"
-  rm "$ML4W_DIR"
-fi
-
-# Symlink ml4w settings
-mkdir -p "$ML4W_DIR/settings"
-for f in "$DOTFILES/hyprland/ml4w/settings"/*; do
+# Symlink script lib files
+for f in "$DOTFILES/hyprland/scripts/lib"/*; do
   [ -f "$f" ] || continue
   base=$(basename "$f")
-  link_file "$f" "$ML4W_DIR/settings/$base"
+  link_file "$f" "$HYPR_DIR/scripts/lib/$base"
 done
 
-# Symlink ml4w scripts
-mkdir -p "$ML4W_DIR/scripts"
-for f in "$DOTFILES/hyprland/ml4w/scripts"/*; do
-  [ -f "$f" ] || continue
-  base=$(basename "$f")
-  link_file "$f" "$ML4W_DIR/scripts/$base"
-  chmod +x "$ML4W_DIR/scripts/$base"
-done
-
-# Symlink ml4w listeners
-link_file "$DOTFILES/hyprland/ml4w/listeners.sh" "$ML4W_DIR/listeners.sh"
-chmod +x "$ML4W_DIR/listeners.sh"
-
-# Symlink ml4w themes
-mkdir -p "$ML4W_DIR/themes"
-link_file "$DOTFILES/hyprland/ml4w/themes/themes.sh" "$ML4W_DIR/themes/themes.sh"
-chmod +x "$ML4W_DIR/themes/themes.sh"
-
-# Initialize ml4w cache for rofi/hyprlock compatibility
-bash "$HYPR_DIR/scripts/init-ml4w-cache.sh"
+# Initialize hyprland cache
+bash "$HYPR_DIR/scripts/init-cache.sh"
 
 echo ":: Hyprland config installed"

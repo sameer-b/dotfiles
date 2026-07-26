@@ -1,15 +1,27 @@
 #!/usr/bin/env bash
-# Simple wallpaper setter using swww or hyprpaper
-CACHE="$HOME/.cache/ml4w/hyprland-dotfiles"
+# Set wallpaper using hyprpaper or swww
+
+CACHE="$HOME/.cache/hyprland"
 WALLPAPER=""
-if [[ "$1" == "--restore" ]]; then
+
+restore() {
   WALLPAPER=$(cat "$CACHE/current_wallpaper" 2>/dev/null || echo "")
   [ -z "$WALLPAPER" ] && exit 0
-elif [[ "$1" == "--random" ]]; then
-  DIR="$HOME/Pictures/wallpapers"
+}
+
+random_wall() {
+  DIR="${WALLPAPER_DIR:-$HOME/Pictures/wallpapers}"
   [ ! -d "$DIR" ] && exit 0
   WALLPAPER=$(find "$DIR" -type f \( -name '*.jpg' -o -name '*.png' -o -name '*.jpeg' \) | shuf -n 1)
   [ -z "$WALLPAPER" ] && exit 0
+}
+
+if [[ "$1" == "--restore" ]]; then
+  restore
+elif [[ "$1" == "--random" ]]; then
+  random_wall
+elif [[ -n "$1" ]]; then
+  WALLPAPER="$1"
 else
   exit 0
 fi

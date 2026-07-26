@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 notify_user() {
     local icon="dialog-information"
     local urgency="normal"
@@ -7,7 +5,6 @@ notify_user() {
     local app="System"
     local summary=""
     local message=""
-
     while [[ $# -gt 0 ]]; do
         case "$1" in
         --icon|--i|-i) icon="$2"; shift 2 ;;
@@ -20,7 +17,6 @@ notify_user() {
         *) echo "notify_user: unknown option: $1" >&2; return 1 ;;
         esac
     done
-
     [[ -z "$summary" ]] && summary="$app"
     notify-send -u "$urgency" -t "$time" -i "$icon" -a "$app" "$summary" "$message"
 }

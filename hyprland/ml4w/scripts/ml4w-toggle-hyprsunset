@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-# Toggle hyprsunset (blue light filter)
-if pgrep -x hyprsunset >/dev/null; then
-  killall hyprsunset
-else
-  hyprsunset &
-fi

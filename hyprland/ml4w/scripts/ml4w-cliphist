@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-# Clipboard manager using cliphist + rofi
-case "$(rofi -dmenu -theme ~/.config/rofi/config-cliphist.rasi -p "Clipboard" <<< "$(cliphist list)")" in
-  "") exit 0 ;;
-  *) cliphist decode <<< "$choice" | wl-copy ;;
-esac

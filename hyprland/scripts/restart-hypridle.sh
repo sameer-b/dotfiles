@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-# Notifications
-source "$HOME/.config/ml4w/scripts/ml4w-notification-handler"
+source "$HOME/.config/hypr/scripts/lib/notify.sh"
 
-killall hypridle
+notify_user --a "hypridle" \
+            --i "dialog-information" \
+            --s "Hypridle has been restarted" \
+            --t 2000
 sleep 1
-hypridle &
-
-notify_user --a "Hypridle" \
-        --s "Hypridle has been restarted." \
-        --m ""
+killall hypridle
+hypridle

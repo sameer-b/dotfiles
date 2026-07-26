@@ -45,7 +45,7 @@ dotfiles/
 │   │   ├── layout.lua        # Layout variant loader
 │   │   ├── layouts/default.lua      # Dwindle, master, binds
 │   │   ├── misc.lua          # Misc settings
-│   │   ├── ml4w.lua          # ML4W rules + env vars (Wayland, Qt, cursor)
+│   │   ├── ml4w.lua          # Window rules + env vars (Wayland, Qt, cursor)
 │   │   ├── monitor.lua       # Monitor variant loader
 │   │   ├── monitors/default.lua
 │   │   ├── window.lua        # Window variant loader
@@ -290,7 +290,7 @@ In OmniWM `settings.toml`: RGB floats (e.g., accent border = `1.0, 0.37, 0.99` ~
 - **Autostart**: waybar (with SUPER+SHIFT+W to restart waybar)
 
 ### Hyprland Lua (`hyprland/hyprland.lua` + conf/ modules)
-- ML4W-style Lua configuration for advanced settings
+- Lua-based Hyprland configuration
 - Uses `hl.config()`, `hl.bind()`, `hl.curve()`, `hl.animation()`, `hl.monitor()`, `hl.gesture()`, `hl.env()`, `hl.window_rule()`, `hl.on()`, `hl.dispatch()`, `hl.exec_cmd()`
 - Load order in `hyprland.lua`: functions → monitor → input → gestures → autostart → colors → environment → window → decoration → layout → workspace → misc → keybinding → windowrule → animation → ml4w
 - Variant system: each category has a loader (`conf/window.lua`) that calls `load_variant("default.lua", "windows")` to load from `conf/windows/default.lua`
@@ -307,7 +307,7 @@ In OmniWM `settings.toml`: RGB floats (e.g., accent border = `1.0, 0.37, 0.99` ~
 - Restarts xdg-desktop-portal services
 - Starts: awww-daemon, waybar, polkit-gnome, swaync, hypridle, cliphist store
 - Sets cursor: Bibata-Modern-Ice 24
-- Loads GTK settings and runs ML4W autostart
+- Loads GTK settings and restores wallpaper
 
 ### Waybar (`waybar/config.jsonc`)
 - Top bar, height 36, margin 3/50/50

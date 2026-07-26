@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-# Toggle a window in/out of special workspace
-hyprctl dispatch togglespecialworkspace magic

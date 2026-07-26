@@ -1,20 +1,3 @@
---    __  _____  _____      __  _____          ___
---   /  |/  / / / / / | /| / / / ___/__  ___  / _/
---  / /|_/ / /_/_  _/ |/ |/ / / /__/ _ \/ _ \/ _/
--- /_/  /_/____//_/ |__/|__/  \___/\___/_//_/_/
---
-
--- HOME directory
-local HOME = os.getenv("HOME")
-
--- Add .local/bin to PATH
-local current_path = os.getenv("PATH")
-hl.env("PATH", HOME .. "/.local/bin:" .. current_path)
-
--- Add .cargo/bin to PATH
-local current_path = os.getenv("PATH")
-hl.env("PATH", HOME .. "/.cargo/bin:" .. current_path)
-
 -- Pavucontrol
 hl.window_rule({
     name = "pavucontrol",
@@ -22,26 +5,6 @@ hl.window_rule({
     float = true,
     center = true,
     size = "700 600"
-})
-
--- ML4W Welcome App
-hl.window_rule({
-    name = "ml4w-welcome-app",
-    match = {title = "ML4W Welcome"},
-    float = true,
-    center = true,
-    pin = true,
-    size = "700 600"
-})
-
--- ML4W Settings App
-hl.window_rule({
-    name = "ml4w-settings-app",
-    match = {title = "ML4W Dotfiles Settings"},
-    float = true,
-    center = true,
-    pin = true,
-    size = "900 600"
 })
 
 -- Waypaper
@@ -138,24 +101,6 @@ hl.window_rule({
     size = "800 700"
 })
 
--- Hyprmod
-hl.window_rule({
-    name = "io.github.bluemancz.hyprmod",
-    match = {class = "io.github.bluemancz.hyprmod"},
-    float = true,
-    center = true,
-    size = "1000 700"
-})
-
--- ML4W Floating
-hl.window_rule({
-    name = "dotfiles-floating",
-    match = {class = "dotfiles-floating"},
-    float = true,
-    center = true,
-    size = "1000 700"
-})
-
 -- Picture-in-Picture
 hl.window_rule({
     name = "Picture-in-Picture",
@@ -201,9 +146,6 @@ hl.env("HYPRCURSOR_SIZE", "24")
 
 -- SDL version
 hl.env("SDL_VIDEODRIVER", "wayland")
-
--- Quickshell debug
-hl.env("QS_NO_RELOAD_POPUP", "1")
 
 -- Force zero scaling for XWayland
 hl.config({

@@ -1,34 +1,15 @@
-#!/usr/bin/env bash
-#                                 __        __ 
-#   ___ ___________ ___ ___  ___ / /  ___  / /_
-#  (_-</ __/ __/ -_) -_) _ \(_-</ _ \/ _ \/ __/
-# /___/\__/_/  \__/\__/_//_/___/_//_/\___/\__/ 
-#                                              
-# Based on https://github.com/hyprwm/contrib/blob/main/grimblast/screenshot.sh
+# Notifications
+source "$HOME/.config/hypr/scripts/lib/notify.sh"
+APP_NAME="Screen Capture"
+NOTIFICATION_ICON="camera-photo-symbolic"
 
-# -----------------------------------------------------
-
-# Screenshots will be stored in $HOME by default.
-# The screenshot will be moved into the screenshot directory
-
-# Defaults
+# Screenshots will be stored in $HOME by default
 SAVE_DIR="$HOME/Pictures"
 SAVE_FILENAME="screenshot_$(date +%d%m%Y_%H%M%S).jpg"
 
-# Load Settings
-if [ -f ~/.config/ml4w/settings/screenshot-folder ]; then
-    SAVE_DIR=$(cat ~/.config/ml4w/settings/screenshot-folder)
-fi
-if [ -f ~/.config/ml4w/settings/screenshot-filename ]; then
-    SAVE_FILENAME=$(cat ~/.config/ml4w/settings/screenshot-filename)
-fi
-
-eval screenshot_folder="$SAVE_DIR"
-eval NAME="$SAVE_FILENAME"
-
-# Get image format
+# Default image format
 image_format="png"
-extension="${NAME##*.}"
+extension="${SAVE_FILENAME##*.}"
 
 case $extension in
     "jpg"|"jpeg")
@@ -39,24 +20,16 @@ case $extension in
         ;;
 esac
 
-# Notifications
-source "$HOME/.config/ml4w/scripts/ml4w-notification-handler"
-APP_NAME="Screen Capture"
-NOTIFICATION_ICON="camera-photo-symbolic"
-
-# Screenshot Editor
-export GRIMBLAST_EDITOR="$(cat ~/.config/ml4w/settings/screenshot-editor)"
-
 # Quick instant mode: full screen
 take_instant_full() {
-    grim -t "$image_format" "$NAME" && notify_user \
+    grim -t "$image_format" "$SAVE_FILENAME" && notify_user \
         --a "${APP_NAME}" \
         --i "${NOTIFICATION_ICON}" \
         --s "Screenshot saved" \
-        --m "$screenshot_folder/$NAME" \
+        --m "$SAVE_DIR/$SAVE_FILENAME" \
         --t 1000
 
-    [[ -f "$HOME/$NAME" && -d "$screenshot_folder" && -w "$screenshot_folder" ]] && mv "$HOME/$NAME" "$screenshot_folder/"
+    [[ -f "$HOME/$SAVE_FILENAME" && -d "$SAVE_DIR" && -w "$SAVE_DIR" ]] && mv "$HOME/$SAVE_FILENAME" "$SAVE_DIR/"
 }
 
 # Quick instant mode: area selection
@@ -78,13 +51,13 @@ take_instant_area() {
     trap - EXIT
 
     # capture and notify
-    grim -g "$region" -t "$image_format" "$NAME" && notify_user \
+    grim -g "$region" -t "$image_format" "$SAVE_FILENAME" && notify_user \
         --a "${APP_NAME}" \
         --i "${NOTIFICATION_ICON}" \
         --s "Screenshot saved" \
-        --m "$screenshot_folder/$NAME" \
+        --m "$SAVE_DIR/$SAVE_FILENAME" \
         --t 1000
-    [[ -f "$HOME/$NAME" && -d "$screenshot_folder" && -w "$screenshot_folder" ]] && mv "$HOME/$NAME" "$screenshot_folder/"
+    [[ -f "$HOME/$SAVE_FILENAME" && -d "$SAVE_DIR" && -w "$SAVE_DIR" ]] && mv "$HOME/$SAVE_FILENAME" "$SAVE_DIR/"
 }
 
 # Handle instant flags
@@ -109,7 +82,6 @@ option_time_2="10s"
 option_time_3="20s"
 option_time_4="30s"
 option_time_5="60s"
-#option_time_4="Custom (in seconds)" # Roadmap or someone contribute :)
 
 list_col='1'
 list_row='2'
@@ -208,7 +180,6 @@ copy_save_editor_exit() {
 }
 
 # Confirm and execute
-# Note: `grimblast` only supports png outpuut when copy is specified
 copy_save_editor_run() {
     selected_chosen="$(copy_save_editor_exit)"
     if [[ "$selected_chosen" == "$copy" ]]; then
@@ -258,10 +229,10 @@ timer() {
 # take shots
 takescreenshot() {
     sleep 1
-    grimblast --notify "$option_chosen" --filetype "$image_format" "$option_type_screenshot" $NAME
-    if [ -f $HOME/$NAME ]; then
-        if [ -d $screenshot_folder ]; then
-            mv $HOME/$NAME $screenshot_folder/
+    grimblast --notify "$option_chosen" --filetype "$image_format" "$option_type_screenshot" $SAVE_FILENAME
+    if [ -f $HOME/$SAVE_FILENAME ]; then
+        if [ -d $SAVE_DIR ]; then
+            mv $HOME/$SAVE_FILENAME $SAVE_DIR/
         fi
     fi
 }
@@ -270,10 +241,10 @@ takescreenshot_timer() {
     sleep 1
     timer
     sleep 1
-    grimblast --notify "$option_chosen" --filetype "$image_format" "$option_type_screenshot" $NAME
-    if [ -f $HOME/$NAME ]; then
-        if [ -d $screenshot_folder ]; then
-            mv $HOME/$NAME $screenshot_folder/
+    grimblast --notify "$option_chosen" --filetype "$image_format" "$option_type_screenshot" $SAVE_FILENAME
+    if [ -f $HOME/$SAVE_FILENAME ]; then
+        if [ -d $SAVE_DIR ]; then
+            mv $HOME/$SAVE_FILENAME $SAVE_DIR/
         fi
     fi
 }
