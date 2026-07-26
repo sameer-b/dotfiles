@@ -1,0 +1,80 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 36,
+  "margin-top": 3,
+  "margin-left": 50,
+  "margin-right": 50,
+  "spacing": 4,
+  "output": null,
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": [],
+  "modules-right": [
+    "custom/volume",
+    "custom/wifi",
+    "custom/cpu",
+    "custom/gpu",
+    "clock#date",
+    "clock#time"
+  ],
+
+  "hyprland/workspaces": {
+    "all-outputs": true,
+    "persistent-workspaces": {
+      "*": 10
+    },
+    "format": "{name}",
+    "window-icon": true,
+    "window-icon-size": 16,
+    "format-icons": {
+      "default": "",
+      "active": "",
+      "urgent": ""
+    },
+    "on-click": "activate",
+    "on-scroll-up": "hyprctl dispatch workspace e-1",
+    "on-scroll-down": "hyprctl dispatch workspace e+1"
+  },
+
+  "custom/volume": {
+    "exec": "~/.config/waybar/scripts/volume.sh",
+    "return-type": "json",
+    "interval": 1,
+    "on-click": "pavucontrol",
+    "on-click-right": "~/.config/waybar/scripts/volume.sh menu",
+    "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+",
+    "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+  },
+
+  "custom/wifi": {
+    "exec": "~/.config/waybar/scripts/wifi.sh",
+    "return-type": "json",
+    "interval": 30,
+    "on-click": "~/.config/waybar/scripts/wifi.sh menu",
+    "on-click-right": "nm-connection-editor"
+  },
+
+  "custom/cpu": {
+    "exec": "~/.config/waybar/scripts/cpu.sh",
+    "return-type": "json",
+    "interval": 2
+  },
+
+  "custom/gpu": {
+    "exec": "~/.config/waybar/scripts/gpu.sh",
+    "return-type": "json",
+    "interval": 2
+  },
+
+  "clock#date": {
+    "format": "{:%b %d}",
+    "interval": 60,
+    "tooltip": false
+  },
+
+  "clock#time": {
+    "format": "{:%I:%M %p}",
+    "interval": 30,
+    "tooltip": false
+  }
+}

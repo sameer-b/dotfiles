@@ -2,7 +2,7 @@
 
 ## Overview
 
-macOS-centric dotfiles for a tiling window manager setup with AeroSpace, Ghostty terminal, OmniWM, SketchyBar status bar, and fastfetch system info. The aesthetic is **Catppuccin Mocha + Hack Nerd Font Mono + transparency/blur + cat-themed fastfetch**.
+Cross-platform dotfiles — macOS (AeroSpace/OmniWM/SketchyBar) and Linux (Hyprland/Waybar/Rofi). The aesthetic is **Catppuccin Mocha / Rose Pine + JetBrains Mono Nerd Font + transparency/blur**. Linux configs are managed under `hyprland/`, `waybar/`, and `rofi/`.
 
 **No shell rc files (`.zshrc`, `.bashrc`), no Git config, no editor configs live here.** This repo only manages the visual/WM layer.
 
@@ -19,14 +19,65 @@ dotfiles/
 ├── aero space/
 │   ├── aerospace.toml        # AeroSpace tiling WM config
 │   └── install.sh
+├── hyprland/
+│   ├── hyprland.conf         # Main Hyprland entry point (bindings, exec-once, input)
+│   ├── hypridle.conf         # Idle daemon (lock, dpms, suspend)
+│   ├── hyprlock.conf         # Lock screen (blurred wallpaper, clock, input)
+│   ├── hyprpaper.conf        # Wallpaper daemon
+│   ├── hyprsunset.conf       # Blue light filter
+│   ├── colors.conf           # Color variable definitions
+│   ├── colors.lua            # Lua color definitions
+│   ├── hyprland.lua          # Lua entry point (requires all modules)
+│   ├── monitors.lua          # Monitor setup
+│   ├── input.lua             # Input configuration (kb layout, touchpad)
+│   ├── gestures.lua          # Touch gestures
+│   ├── functions.lua         # Lua functions (gamemode, load_variant)
+│   ├── conf/
+│   │   ├── animation.lua     # Animation variant loader
+│   │   ├── animations/default.lua  # Bezier curves + animation rules
+│   │   ├── autostart.lua     # hyprland.start handler
+│   │   ├── decoration.lua    # Decoration variant loader
+│   │   ├── decorations/default.lua # Rounding, opacity, blur, shadow
+│   │   ├── environment.lua   # Environment variant loader
+│   │   ├── environments/default.lua
+│   │   ├── keybinding.lua    # Keybinding variant loader
+│   │   ├── keybindings/default.lua  # All hotkeys (117 lines)
+│   │   ├── layout.lua        # Layout variant loader
+│   │   ├── layouts/default.lua      # Dwindle, master, binds
+│   │   ├── misc.lua          # Misc settings
+│   │   ├── ml4w.lua          # ML4W rules + env vars (Wayland, Qt, cursor)
+│   │   ├── monitor.lua       # Monitor variant loader
+│   │   ├── monitors/default.lua
+│   │   ├── window.lua        # Window variant loader
+│   │   ├── windows/default.lua      # Gaps, borders, layout
+│   │   ├── windowrule.lua    # Window rule variant loader
+│   │   ├── windowrules/default.lua
+│   │   ├── workspace.lua     # Workspace variant loader
+│   │   └── workspaces/default.lua
+│   ├── assets/blank.png      # Blank wallpaper placeholder
+│   ├── scripts/              # 18 helper scripts (screenshot, gamemode, etc.)
+│   └── install.sh
+├── waybar/
+│   ├── config.jsonc          # Waybar config (workspaces, volume, wifi, cpu, gpu, clock)
+│   ├── style.css             # Rose Pine themed CSS (rounded, transparent)
+│   ├── scripts/              # volume.sh, wifi.sh, cpu.sh, gpu.sh
+│   └── install.sh
+├── rofi/
+│   ├── config.rasi           # Main launcher theme (Rose Pine, rounded, 640px)
+│   ├── config-cliphist.rasi  # Clipboard history theme
+│   ├── config-compact.rasi   # Compact keybinds theme
+│   ├── config-screenshot.rasi # Screenshot menu theme
+│   ├── config-short.rasi     # Short input theme
+│   ├── config-themes.rasi    # Theme switcher theme
+│   ├── config-hyprshade.rasi # Hyprsunset toggle theme
+│   ├── config-ocr-lang.rasi  # OCR language selector theme
+│   ├── colors.rasi           # Material You color definitions
+│   └── install.sh
 ├── scripts/
 │   ├── lib.sh                # Shared helpers: link_file(), sed_i()
 │   ├── catfetch              # Wrapper: fastfetch + random cat logo
 │   └── ghostty-init          # Ghostty launcher: catfetch then login shell
 ├── fastfetch/
-│   ├── config.jsonc          # System info display config
-│   └── install.sh
-├── ghostty/
 │   ├── config                # Ghostty terminal config
 │   └── install.sh
 ├── jankyborders/
@@ -181,6 +232,9 @@ In OmniWM `settings.toml`: RGB floats (e.g., accent border = `1.0, 0.37, 0.99` ~
    - **fastfetch/install.sh** — copies JSONC (with logo placeholder substitution via `sed_i`), copies cat images, links `catfetch`, symlinks `assets/cats` to `~/Pictures/cats`
    - **omniwm/install.sh** — symlinks `settings.toml` (macOS only, skips on other OS)
    - **sketchybar/install.sh** — taps brew, installs sketchybar/lua/sf-symbols, installs SbarLua from GitHub, installs sketchybar-app-font, copies widget PNG icons, symlinks all sketchybar/ files (except install.sh), starts sketchybar service
+   - **hyprland/install.sh** — installs Hyprland + deps via pacman, symlinks all hypr configs and scripts
+   - **waybar/install.sh** — installs waybar, symlinks config and scripts
+   - **rofi/install.sh** — installs rofi, symlinks all rasi themes
    - **nvim/install.sh** — installs neovim via brew/pacman, symlinks `init.lua`
 3. Each sub-install.sh is idempotent (uses `link_file` with backup, `--force` installs)
 
@@ -190,12 +244,15 @@ In OmniWM `settings.toml`: RGB floats (e.g., accent border = `1.0, 0.37, 0.99` ~
 
 | Config | Destination |
 |--------|-------------|
+| Hyprland | `~/.config/hypr/` |
 | AeroSpace | `~/.config/aerospace/aerospace.toml` |
 | Ghostty (macOS) | `~/Library/Application Support/com.mitchellh.ghostty/config` |
 | Ghostty (Linux) | `~/.config/ghostty/config` |
 | JankyBorders | `~/.config/borders/bordersrc` |
 | Neovim | `~/.config/nvim/init.lua` |
 | OmniWM | `~/.config/omniwm/settings.toml` |
+| Waybar | `~/.config/waybar/` |
+| Rofi | `~/.config/rofi/` |
 | SketchyBar | `~/.config/sketchybar/` |
 | fastfetch | `~/.config/fastfetch/config.jsonc` |
 | Cat images | `~/.config/fastfetch/cats/` + `~/Pictures/cats/` (symlink) |
@@ -217,3 +274,58 @@ In OmniWM `settings.toml`: RGB floats (e.g., accent border = `1.0, 0.37, 0.99` ~
 9. **Python helpers** — use only stdlib + `subprocess` (no pip dependencies). macOS-specific tools (`sips`, `mdfind`, `omniwmctl`) are expected.
 10. **Lua style**: 2-space indentation, no trailing semicolons, `snake_case` for locals, `require("module")` at top. Align table keys with spaces.
 11. **Bash style**: `set -e` at top, `snake_case` for local variables, `"$var"` quoting, `/dev/null` redirection for noisy commands with `|| true`.
+
+## Hyprland-Specific Patterns
+
+### Hyprland Config (`hyprland/hyprland.conf`)
+- Main entry point uses plain Hyprland syntax (non-Lua) for simplicity
+- **Key bindings**: SUPER+T for terminal, SUPER+Q kill active, SUPER+M exit, SUPER+E file manager, SUPER+V toggle float, SUPER+SPACE rofi launcher
+- **Workspaces**: SUPER+1-10 switch, SUPER+SHIFT+1-10 move windows
+- **Focus**: SUPER+arrow keys to move focus, SUPER+SHIFT+arrow keys to move windows
+- **Resize**: SUPER+= and SUPER+- to resize active window horizontally
+- **Scroll**: SUPER+mouse wheel to switch workspaces
+- **Input**: sensitivity 0.5, natural scroll enabled
+- **General**: gaps_out 10, border_size 4, rainbow active border, inactive border gray
+- **Animations**: borderangle animation with loop for rainbow border effect
+- **Autostart**: waybar (with SUPER+SHIFT+W to restart waybar)
+
+### Hyprland Lua (`hyprland/hyprland.lua` + conf/ modules)
+- ML4W-style Lua configuration for advanced settings
+- Uses `hl.config()`, `hl.bind()`, `hl.curve()`, `hl.animation()`, `hl.monitor()`, `hl.gesture()`, `hl.env()`, `hl.window_rule()`, `hl.on()`, `hl.dispatch()`, `hl.exec_cmd()`
+- Load order in `hyprland.lua`: functions → monitor → input → gestures → autostart → colors → environment → window → decoration → layout → workspace → misc → keybinding → windowrule → animation → ml4w
+- Variant system: each category has a loader (`conf/window.lua`) that calls `load_variant("default.lua", "windows")` to load from `conf/windows/default.lua`
+- **Key bindings**: 117 lines in `conf/keybindings/default.lua` covering apps, workspaces, window management, actions, scratchpad, multimedia keys
+- **Decorations**: rounding 10, active_opacity 1.0, inactive_opacity 0.9, blur enabled (4 passes, xray), shadow enabled
+- **Windows**: gaps_in 10, gaps_out 20, border_size 2, gradient active border (primary → on_primary), dwindle layout
+- **Animations**: 12 bezier curves, popin for windows, slide for layers/workspaces, 10 speed for border
+- **Environment**: Wayland env vars (OZONE_PLATFORM, XDG_SESSION_TYPE, QT_QPA_PLATFORM, etc.), cursor settings, xwayland force_zero_scaling
+- **Window rules**: float and center for pavucontrol, blueman-manager, gnome-calculator, nm-connection-editor, screenshare picker, picture-in-picture
+
+### Autostart (`conf/autostart.lua`)
+- Runs on `hyprland.start` event
+- Exports WAYLAND_DISPLAY and XDG_CURRENT_DESKTOP via dbus
+- Restarts xdg-desktop-portal services
+- Starts: awww-daemon, waybar, polkit-gnome, swaync, hypridle, cliphist store
+- Sets cursor: Bibata-Modern-Ice 24
+- Loads GTK settings and runs ML4W autostart
+
+### Waybar (`waybar/config.jsonc`)
+- Top bar, height 36, margin 3/50/50
+- Left: workspace indicators (all outputs, persistent 10 workspaces, window icons)
+- Right: custom/volume (scroll for volume, click for pavucontrol), custom/wifi (click for network menu), custom/cpu (temp + usage), custom/gpu (temp + utilization), clock#date, clock#time
+- Scripts use JSON return format with icons and classes
+- **Style**: Rose Pine inspired, JetBrains Mono Nerd Font, rounded transparent backgrounds, border radius 16px
+
+### Rofi (`rofi/config.rasi`)
+- Rose Pine color scheme (#1a1a2e bg, #c4a7e7 accent, #e0def4 fg)
+- 640px width, rounded 20px, 14px font
+- 8 lines, vertical layout, 28px icons
+- Multiple theme variants for different use cases (cliphist, compact, screenshot, short, themes, hyprshade, ocr-lang)
+
+## Installing on a New System
+
+1. Clone this repo: `git clone <url> ~/.dotfiles`
+2. Run `./configure.sh` from the repo root
+3. Or run individual install.sh scripts: `./hyprland/install.sh`, `./waybar/install.sh`, `./rofi/install.sh`
+
+Each script is idempotent and backs up existing configs.

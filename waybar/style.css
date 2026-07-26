@@ -1,0 +1,93 @@
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrainsMono Nerd Font", "sans-serif";
+  font-size: 13px;
+  min-height: 0;
+}
+
+window#waybar {
+  background: rgba(8, 8, 15, 0.96);
+  border: 2px solid rgba(196, 167, 231, 0.8);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+#workspaces {
+  margin: 4px 6px;
+}
+
+#workspaces button {
+  padding: 0 8px;
+  margin: 0 2px;
+  background: transparent;
+  color: rgba(224, 222, 244, 0.7);
+  border-radius: 10px;
+  font-size: 14px;
+  min-width: 24px;
+}
+
+#workspaces button.active {
+  background: rgba(196, 167, 231, 0.3);
+  color: #c4a7e7;
+}
+
+#workspaces button.urgent {
+  background: rgba(235, 111, 146, 0.3);
+  color: #eb6f92;
+}
+
+#workspaces button:hover {
+  background: rgba(196, 167, 231, 0.2);
+  color: #e0def4;
+}
+
+#custom-volume,
+#custom-wifi,
+#custom-cpu,
+#custom-gpu {
+  padding: 0 10px;
+  margin: 4px 2px;
+  background: rgba(30, 30, 50, 0.5);
+  border-radius: 10px;
+  color: #e0def4;
+}
+
+#custom-volume:hover,
+#custom-wifi:hover,
+#custom-cpu:hover,
+#custom-gpu:hover {
+  background: rgba(196, 167, 231, 0.2);
+}
+
+#custom-volume {
+  color: #9ccfd8;
+}
+
+#custom-wifi {
+  color: #c4a7e7;
+}
+
+#custom-cpu {
+  color: #ebbcba;
+}
+
+#custom-gpu {
+  color: #f6c177;
+}
+
+#clock#date {
+  padding: 0px;
+  margin: 0px;
+  background: rgba(30, 30, 50, 0.5);
+  border-radius: 10px;
+  color: rgba(224, 222, 244, 0.8);
+  font-size: 12px;
+}
+
+tooltip {
+  background: rgba(26, 26, 46, 0.95);
+  border: 1px solid rgba(196, 167, 231, 0.5);
+  border-radius: 10px;
+  color: #e0def4;
+}
