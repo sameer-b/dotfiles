@@ -25,8 +25,8 @@ hl.bind(mainMod .. " + slash",     hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. " + comma",     hl.dsp.layout("toggle"))
 
 -- Resize (matches AeroSpace: alt-/=)
-hl.bind(mainMod .. " + minus",     hl.dsp.exec_cmd("hyprctl dispatch resizeactive -50 0"))
-hl.bind(mainMod .. " + equal",     hl.dsp.exec_cmd("hyprctl dispatch resizeactive 50 0"))
+hl.bind(mainMod .. " + minus",     hl.dsp.window.resize({ x = -50, y = 0, relative = true }))
+hl.bind(mainMod .. " + equal",     hl.dsp.window.resize({ x = 50, y = 0, relative = true }))
 
 -- Move active window around workspaces & monitors
 hl.bind(mainMod .. " + SHIFT + Up",                   hl.dsp.window.move({ direction = "u" }))
@@ -62,7 +62,7 @@ hl.bind(mainMod .. " + B",          hl.dsp.exec_cmd(launchPrefix .. BROWSER))
 hl.bind("CONTROL + SHIFT + Escape", hl.dsp.exec_cmd(launchPrefix .. TERMINAL .. " -e btop"))
 hl.bind(mainMod .. " + Z",          hl.dsp.exec_cmd(noctCall .. "settings-toggle"))
 hl.bind(mainMod .. " + X",          hl.dsp.exec_cmd(noctCall .. "panel-toggle control-center"))
-hl.bind(mainMod .. " + Space",      hl.dsp.exec_cmd(launchPrefix .. "rofi -show drun"))
+hl.bind(mainMod .. " + Space",      hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher"))
 hl.bind(mainMod .. " + period",     hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher /emo"))
 hl.bind(mainMod .. " + L",          hl.dsp.exec_cmd(noctCall .. "session lock"))
 hl.bind(mainMod .. " + ALT + C",    hl.dsp.exec_cmd(noctCall .. "panel-toggle session"))
@@ -122,10 +122,10 @@ for i = 1, NUM_WPM do
 end
 
 -- Workspace back-and-forth (matches AeroSpace: alt-tab)
-hl.bind("ALT + Tab", hl.dsp.exec_cmd("hyprctl dispatch workspace previous"))
+hl.bind("ALT + Tab", hl.dsp.focus({ workspace = "previous" }))
 
 -- Move workspace to monitor (matches AeroSpace: alt+shift-tab)
-hl.bind(mainMod .. " + SHIFT + Tab", hl.dsp.exec_cmd("hyprctl dispatch moveworkspace +1"))
+hl.bind(mainMod .. " + SHIFT + Tab", hl.dsp.workspace.move({ monitor = "+1" }))
 
 -- Move to adjacent workspaces
 hl.bind(mainMod .. " + CONTROL + Right",       hl.dsp.focus({ workspace = "m+1" }))
