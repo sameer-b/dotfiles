@@ -23,10 +23,9 @@ case "$ACTIVE_TITLE" in
         qs ipc call welcome toggle
         ;;
     "ML4W Dotfiles Settings")
-        qs -p $HOME/.local/share/ml4w-dotfiles-settings/quickshell ipc call settings toggle
+        hyprctl dispatch killactive ""
         ;;
     *)
-        # Updated for Hyprland 0.55+ Lua dispatcher syntax
-        hyprctl dispatch 'hl.dsp.window.close()'
+        hyprctl dispatch killactive ""
         ;;
 esac

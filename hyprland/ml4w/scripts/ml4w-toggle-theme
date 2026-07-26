@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Toggle between light and dark GTK theme
+config="$HOME/.config/gtk-3.0/settings.ini"
+if grep -q "gtk-application-prefer-dark-theme=1" "$config" 2>/dev/null; then
+  sed -i 's/gtk-application-prefer-dark-theme=1/gtk-application-prefer-dark-theme=0/' "$config"
+else
+  sed -i 's/gtk-application-prefer-dark-theme=0/gtk-application-prefer-dark-theme=1/' "$config"
+fi

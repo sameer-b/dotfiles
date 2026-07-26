@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Power menu
+case "$1" in
+  -l) hyprlock ;;
+  *)  echo "Usage: $0 {-l}" ;;
+esac

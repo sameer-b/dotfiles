@@ -37,7 +37,7 @@ hl.on("hyprland.start", function ()
     end
 
     -- Autostart scripts
-    hl.exec_cmd("~/.config/ml4w/scripts/ml4w-autostart > ~/.mydotfiles/ml4w-autostart.log 2>&1")
+    hl.exec_cmd("~/.config/ml4w/scripts/ml4w-autostart > /dev/null 2>&1")
 
     -- Load GTK settings
     hl.exec_cmd("~/.config/hypr/scripts/gtk.sh")

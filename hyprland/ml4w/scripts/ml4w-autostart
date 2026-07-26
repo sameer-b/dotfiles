@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Minimal autostart for non-ML4W environments
+CACHE_FOLDER="$HOME/.cache/ml4w/hyprland-dotfiles"
+mkdir -p "$CACHE_FOLDER"
+# Copy blank wallpaper as initial wallpaper if no cache exists
+if [ ! -f "$CACHE_FOLDER/current_wallpaper" ]; then
+  cp "$HOME/.config/hypr/assets/blank.png" "$CACHE_FOLDER/current_wallpaper" 2>/dev/null || true
+fi

@@ -124,4 +124,42 @@ for f in "$DOTFILES/hyprland/scripts"/*.sh; do
   chmod +x "$HYPR_DIR/scripts/$base"
 done
 
+echo ":: Setting up ML4W compatibility layer"
+ML4W_DIR="$HOME/.config/ml4w"
+
+# Remove old symlink if it exists
+if [ -L "$ML4W_DIR" ]; then
+  echo "  removing existing symlink: $ML4W_DIR"
+  rm "$ML4W_DIR"
+fi
+
+# Symlink ml4w settings
+mkdir -p "$ML4W_DIR/settings"
+for f in "$DOTFILES/hyprland/ml4w/settings"/*; do
+  [ -f "$f" ] || continue
+  base=$(basename "$f")
+  link_file "$f" "$ML4W_DIR/settings/$base"
+done
+
+# Symlink ml4w scripts
+mkdir -p "$ML4W_DIR/scripts"
+for f in "$DOTFILES/hyprland/ml4w/scripts"/*; do
+  [ -f "$f" ] || continue
+  base=$(basename "$f")
+  link_file "$f" "$ML4W_DIR/scripts/$base"
+  chmod +x "$ML4W_DIR/scripts/$base"
+done
+
+# Symlink ml4w listeners
+link_file "$DOTFILES/hyprland/ml4w/listeners.sh" "$ML4W_DIR/listeners.sh"
+chmod +x "$ML4W_DIR/listeners.sh"
+
+# Symlink ml4w themes
+mkdir -p "$ML4W_DIR/themes"
+link_file "$DOTFILES/hyprland/ml4w/themes/themes.sh" "$ML4W_DIR/themes/themes.sh"
+chmod +x "$ML4W_DIR/themes/themes.sh"
+
+# Initialize ml4w cache for rofi/hyprlock compatibility
+bash "$HYPR_DIR/scripts/init-ml4w-cache.sh"
+
 echo ":: Hyprland config installed"
