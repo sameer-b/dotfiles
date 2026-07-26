@@ -2,115 +2,17 @@
 set -e
 
 DOTFILES="${DOTFILES:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
-BACKUP_DIR="$HOME/.dotfiles-backup-$(date +%Y%m%d-%H%M%S)"
 source "$DOTFILES/scripts/lib.sh"
 
-echo ":: Installing Hyprland ecosystem"
+echo "Installing Hyprland config..."
 
-# Detect distro and set package manager
-if command -v pacman &>/dev/null; then
-  PM="pacman"
-  INSTALL_CMD="sudo pacman -S --needed --noconfirm"
-  AUR_HELPER=""
-  if command -v yay &>/dev/null; then
-    AUR_HELPER="yay"
-  elif command -v paru &>/dev/null; then
-    AUR_HELPER="paru"
-  fi
-else
-  echo "Unsupported distro. Only Arch-based distros are supported."
-  exit 1
-fi
+mkdir -p "$HOME/.config/hypr/config"
 
-# Install packages
-echo ":: Installing packages..."
-$INSTALL_CMD \
-  hyprland \
-  hyprlock \
-  hypridle \
-  hyprpaper \
-  hyprsunset \
-  hyprpicker \
-  waybar \
-  rofi \
-  swaync \
-  grim \
-  slurp \
-  wl-clipboard \
-  jq \
-  brightnessctl \
-  playerctl \
-  networkmanager \
-  pavucontrol \
-  pipewire \
-  pipewire-pulse \
-  wireplumber \
-  figlet \
-  tesseract \
-  tesseract-data-eng \
-  imagemagick \
-  noto-fonts \
-  ttf-jetbrains-mono-nerd \
-  ttf-firacode-nerd \
-  qt6ct \
-  polkit-gnome \
-  xdg-desktop-portal-hyprland \
-  xdg-desktop-portal-gtk \
-  --noconfirm 2>/dev/null || true
+link_file "$DOTFILES/hyprland/hyprland.lua"    "$HOME/.config/hypr/hyprland.lua"
+link_file "$DOTFILES/hyprland/xdph.conf"       "$HOME/.config/hypr/xdph.conf"
 
-# Install AUR packages if helper is available
-if [[ -n "$AUR_HELPER" ]]; then
-  echo ":: Installing AUR packages (this may take a few minutes)..."
-  $AUR_HELPER -S --needed --noconfirm \
-    bibata-cursor-theme-bin 2>/dev/null || \
-    $AUR_HELPER -S --needed --noconfirm bibata-cursor-theme 2>/dev/null || true
-  $AUR_HELPER -S --needed --noconfirm \
-    tela-circle-dracula-theme \
-    grimblast-git 2>/dev/null || true
-fi
-
-echo ":: Setting up Hyprland config"
-
-HYPR_DIR="$HOME/.config/hypr"
-
-# If hypr dir is a symlink, remove it so we can create our own
-if [ -L "$HYPR_DIR" ]; then
-  echo "  removing existing symlink: $HYPR_DIR"
-  rm "$HYPR_DIR"
-fi
-mkdir -p "$HYPR_DIR"
-
-# Symlink main hyprland.conf
-link_file "$DOTFILES/hyprland/hyprland.conf" "$HYPR_DIR/hyprland.conf"
-
-# Symlink hypr config files
-for f in "$DOTFILES"/hyprland/*.conf; do
-  [ -f "$f" ] || continue
-  base=$(basename "$f")
-  link_file "$f" "$HYPR_DIR/$base"
+for f in "$DOTFILES/hyprland/config/"*.lua; do
+  link_file "$f" "$HOME/.config/hypr/config/$(basename "$f")"
 done
 
-# Symlink assets
-mkdir -p "$HYPR_DIR/assets"
-link_file "$DOTFILES/hyprland/assets/blank.png" "$HYPR_DIR/assets/blank.png"
-
-# Symlink scripts and lib
-mkdir -p "$HYPR_DIR/scripts/lib"
-for f in "$DOTFILES/hyprland/scripts"/*.sh; do
-  [ -f "$f" ] || continue
-  base=$(basename "$f")
-  link_file "$f" "$HYPR_DIR/scripts/$base"
-  chmod +x "$HYPR_DIR/scripts/$base"
-done
-
-# Symlink script lib files
-for f in "$DOTFILES/hyprland/scripts/lib"/*; do
-  [ -f "$f" ] || continue
-  base=$(basename "$f")
-  link_file "$f" "$HYPR_DIR/scripts/lib/$base"
-done
-
-# Initialize hyprland cache
-bash "$HYPR_DIR/scripts/init-cache.sh"
-
-echo ":: Hyprland config installed"
+echo "Hyprland config installed."
