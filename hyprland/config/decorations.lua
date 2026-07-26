@@ -12,22 +12,22 @@ hl.config({
                 colors = { NEON_PINK, NEON_PURPLE, NEON_BLUE, NEON_CYAN, NEON_GREEN, NEON_YELLOW, NEON_RED },
                 angle = 0,
             },
-            inactive_border = CACHYGRAY,
+            inactive_border = GRAY,
         },
     },
     group = {
         col = {
             border_active = NEON_CYAN,
-            border_inactive = CACHYGRAY,
+            border_inactive = GRAY,
             border_locked_active = NEON_PURPLE,
-            border_locked_inactive = CACHYGRAY,
+            border_locked_inactive = GRAY,
         },
         groupbar = {
             col = {
                 active = NEON_GREEN,
-                inactive = CACHYGRAY,
+                inactive = GRAY,
                 locked_active = NEON_PURPLE,
-                locked_inactive = CACHYGRAY,
+                locked_inactive = GRAY,
             },
         },
     },
