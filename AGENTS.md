@@ -26,36 +26,9 @@ dotfiles/
 │   ├── hyprpaper.conf        # Wallpaper daemon
 │   ├── hyprsunset.conf       # Blue light filter
 │   ├── colors.conf           # Color variable definitions
-│   ├── colors.lua            # Lua color definitions
-│   ├── hyprland.lua          # Lua entry point (requires all modules)
-│   ├── monitors.lua          # Monitor setup
-│   ├── input.lua             # Input configuration (kb layout, touchpad)
-│   ├── gestures.lua          # Touch gestures
-│   ├── functions.lua         # Lua functions (gamemode, load_variant)
-│   ├── conf/
-│   │   ├── animation.lua     # Animation variant loader
-│   │   ├── animations/default.lua  # Bezier curves + animation rules
-│   │   ├── autostart.lua     # hyprland.start handler
-│   │   ├── decoration.lua    # Decoration variant loader
-│   │   ├── decorations/default.lua # Rounding, opacity, blur, shadow
-│   │   ├── environment.lua   # Environment variant loader
-│   │   ├── environments/default.lua
-│   │   ├── keybinding.lua    # Keybinding variant loader
-│   │   ├── keybindings/default.lua  # All hotkeys (117 lines)
-│   │   ├── layout.lua        # Layout variant loader
-│   │   ├── layouts/default.lua      # Dwindle, master, binds
-│   │   ├── misc.lua          # Misc settings
-│   │   ├── ml4w.lua          # Window rules + env vars (Wayland, Qt, cursor)
-│   │   ├── monitor.lua       # Monitor variant loader
-│   │   ├── monitors/default.lua
-│   │   ├── window.lua        # Window variant loader
-│   │   ├── windows/default.lua      # Gaps, borders, layout
-│   │   ├── windowrule.lua    # Window rule variant loader
-│   │   ├── windowrules/default.lua
-│   │   ├── workspace.lua     # Workspace variant loader
-│   │   └── workspaces/default.lua
 │   ├── assets/blank.png      # Blank wallpaper placeholder
-│   ├── scripts/              # 18 helper scripts (screenshot, gamemode, etc.)
+│   ├── scripts/              # Helper scripts (screenshot, gamemode, wallpaper, etc.)
+│   │   └── lib/notify.sh     # Notification helper library
 │   └── install.sh
 ├── waybar/
 │   ├── config.jsonc          # Waybar config (workspaces, volume, wifi, cpu, gpu, clock)
@@ -289,25 +262,27 @@ In OmniWM `settings.toml`: RGB floats (e.g., accent border = `1.0, 0.37, 0.99` ~
 - **Animations**: borderangle animation with loop for rainbow border effect
 - **Autostart**: waybar (with SUPER+SHIFT+W to restart waybar)
 
-### Hyprland Lua (`hyprland/hyprland.lua` + conf/ modules)
-- Lua-based Hyprland configuration
-- Uses `hl.config()`, `hl.bind()`, `hl.curve()`, `hl.animation()`, `hl.monitor()`, `hl.gesture()`, `hl.env()`, `hl.window_rule()`, `hl.on()`, `hl.dispatch()`, `hl.exec_cmd()`
-- Load order in `hyprland.lua`: functions → monitor → input → gestures → autostart → colors → environment → window → decoration → layout → workspace → misc → keybinding → windowrule → animation → ml4w
-- Variant system: each category has a loader (`conf/window.lua`) that calls `load_variant("default.lua", "windows")` to load from `conf/windows/default.lua`
-- **Key bindings**: 117 lines in `conf/keybindings/default.lua` covering apps, workspaces, window management, actions, scratchpad, multimedia keys
+### Hyprland Config (`hyprland.conf`)
+- Single plain config file — no Lua dependency. Sources `colors.conf` for color variables.
+- Covers all settings: environment, monitor, input, gestures, general, decoration, animations, layout, misc, window rules, keybindings, autostart
+- **Key bindings**: SUPER+RETURN for terminal, SUPER+Q kill active, SUPER+Space launcher, SUPER+1-10 workspaces, SUPER+SHIFT+1-10 move windows, SUPER+arrows focus, SUPER+SHIFT+arrows resize, multimedia keys
+- **Workspaces**: 10 workspaces with SUPER+1-10, SUPER+SHIFT+1-10 to move windows
+- **Focus**: SUPER+arrow keys, SUPER+mouse drag to move/resize
+- **Resize**: SUPER+SHIFT+arrows to resize active window
+- **Scroll**: SUPER+mouse wheel to switch workspaces
+- **Input**: us layout, alt_shift_toggle group switch, natural scroll on touchpad
 - **Decorations**: rounding 10, active_opacity 1.0, inactive_opacity 0.9, blur enabled (4 passes, xray), shadow enabled
-- **Windows**: gaps_in 10, gaps_out 20, border_size 2, gradient active border (primary → on_primary), dwindle layout
-- **Animations**: 12 bezier curves, popin for windows, slide for layers/workspaces, 10 speed for border
-- **Environment**: Wayland env vars (OZONE_PLATFORM, XDG_SESSION_TYPE, QT_QPA_PLATFORM, etc.), cursor settings, xwayland force_zero_scaling
+- **Animations**: 14 bezier curves, popin for windows, slide for layers/workspaces, 10 speed for border
+- **Environment**: Wayland env vars (OZONE_PLATFORM, XDG_SESSION_TYPE, QT_QPA_PLATFORM, etc.), Bibata cursor, xwayland force_zero_scaling
 - **Window rules**: float and center for pavucontrol, blueman-manager, gnome-calculator, nm-connection-editor, screenshare picker, picture-in-picture
 
-### Autostart (`conf/autostart.lua`)
-- Runs on `hyprland.start` event
-- Exports WAYLAND_DISPLAY and XDG_CURRENT_DESKTOP via dbus
-- Restarts xdg-desktop-portal services
-- Starts: awww-daemon, waybar, polkit-gnome, swaync, hypridle, cliphist store
-- Sets cursor: Bibata-Modern-Ice 24
-- Loads GTK settings and restores wallpaper
+### Autostart
+- `exec-once` entries in `hyprland.conf`:
+  - Exports WAYLAND_DISPLAY and XDG_CURRENT_DESKTOP via dbus
+  - Restarts xdg-desktop-portal services
+  - Starts: awww-daemon, waybar, polkit-gnome, swaync, hypridle, cliphist store
+  - Sets cursor: Bibata-Modern-Ice 24
+  - Restores wallpaper, loads GTK settings
 
 ### Waybar (`waybar/config.jsonc`)
 - Top bar, height 36, margin 3/50/50

@@ -84,31 +84,10 @@ mkdir -p "$HYPR_DIR"
 link_file "$DOTFILES/hyprland/hyprland.conf" "$HYPR_DIR/hyprland.conf"
 
 # Symlink hypr config files
-for f in "$DOTFILES"/hyprland/*.conf "$DOTFILES"/hyprland/*.lua; do
+for f in "$DOTFILES"/hyprland/*.conf; do
   [ -f "$f" ] || continue
   base=$(basename "$f")
   link_file "$f" "$HYPR_DIR/$base"
-done
-
-# Symlink conf/ subdirectories
-for dir in conf; do
-  if [ -d "$DOTFILES/hyprland/$dir" ]; then
-    for f in "$DOTFILES/hyprland/$dir"/*; do
-      [ -e "$f" ] || continue
-      base=$(basename "$f")
-      mkdir -p "$HYPR_DIR/$dir"
-      if [ -d "$f" ]; then
-        mkdir -p "$HYPR_DIR/$dir/$base"
-        for sf in "$f"/*; do
-          [ -f "$sf" ] || continue
-          sbase=$(basename "$sf")
-          link_file "$sf" "$HYPR_DIR/$dir/$base/$sbase"
-        done
-      else
-        link_file "$f" "$HYPR_DIR/$dir/$base"
-      fi
-    done
-  fi
 done
 
 # Symlink assets
