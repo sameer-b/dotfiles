@@ -10,7 +10,7 @@ local colors = {
   transparent = 0x00000000,
   popup     = { bg = 0xf0181926, border = 0xff45475a },
   bg1       = 0x00000000,
-  bg2       = 0x8f000000,
+  bg2       = 0xff000000,
 }
 
 
