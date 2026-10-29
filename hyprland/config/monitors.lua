@@ -8,8 +8,13 @@
 -- })
 
 hl.monitor({
-    output    = MONITOR1,
-    mode      = "preferred",
-    position  = "auto",
-    scale     = "1",
+  output    = "HDMI-A-1",
+  mode      = "3440x1440@100",
+  position  = "auto",
+  scale     = "1",
 })
+
+--hl.monitor = {
+ --   { "", "highrr", "auto", "1" }
+--}
+

@@ -39,3 +39,10 @@ mouse-hide-while-typing = true
 
 adjust-cell-height = 2
 adjust-cell-width = -1
+
+
+# Copy selected text, otherwise pass Ctrl+C through
+keybind = performable:ctrl+c=copy_to_clipboard
+
+# Paste using physical Command+V
+keybind = ctrl+v=paste_from_clipboard

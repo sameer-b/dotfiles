@@ -1,4 +1,4 @@
-local mainMod = "SUPER"
+local mainMod = "ALT"
 local noctCall = "noctalia msg "
 local launchPrefix = "uwsm app -- " -- if you are not using UWSM, make this empty (e.g. "")
 

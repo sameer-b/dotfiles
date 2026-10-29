@@ -14,7 +14,7 @@
     },
     "printRemaining": false,
     "preserveAspectRatio": true,
-    "recache": false,
+    "cache": false,
     "position": "left"
   },
   "display": {
